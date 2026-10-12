@@ -1,0 +1,19 @@
+/*
+ * @deltafil/components — Tailwind entry for consumers.
+ *
+ * Usage in the app's global stylesheet (after Tailwind itself):
+ *   @import "tailwindcss";
+ *   @import "@deltafil/components/styles/theme.css";
+ */
+
+/* Scan the library's code for utility classes.
+   Matches the .ts sources in this workspace and the .mjs bundles once published. */
+@source "../**/*.{ts,html,mjs}";
+
+/* Design tokens shared by every component in the lib. */
+@theme {
+  --color-primary-50: oklch(0.97 0.02 255);
+  --color-primary-500: oklch(0.62 0.19 255);
+  --color-primary-600: oklch(0.55 0.2 255);
+  --color-primary-700: oklch(0.48 0.18 255);
+}
