@@ -7,8 +7,9 @@
   height="screen"
   margin="md"
   padding="sm"
+  overflow="auto"
   rounded="lg"
-  background="primary"
+  background="canvas"
 >
   <div
     deltafilContainer
@@ -17,12 +18,13 @@
     gap="sm"
     padding="sm"
     width="auto"
-    background="soft"
+    background="panel"
     rounded="md"
   >
     <button
       deltafilButton
       type="button"
+      appearance="outlined"
       variant="secondary"
       (click)="toggleDarkMode()"
       [attr.aria-label]="isDark() ? 'Switch to light mode' : 'Switch to dark mode'"
@@ -64,6 +66,7 @@
     <button
       deltafilButton
       type="button"
+      appearance="outlined"
       variant="secondary"
       (click)="useSystemTheme()"
       aria-label="Use computer color scheme"
@@ -91,17 +94,83 @@
   </h1>
   <div
     deltafilContainer
-    direction="horizontal"
-    justify="center"
+    direction="vertical"
+    justify="start"
+    align="start"
     gap="md"
     padding="md"
     width="full"
-    background="soft"
+    background="panel"
     rounded="md"
   >
-    <button deltafilButton type="button" grow>Primary</button>
-    <button deltafilButton type="button" variant="secondary" grow>Secondary</button>
-    <button deltafilButton type="button" variant="error" grow>Error</button>
+    <button deltafilButton type="button" appearance="text" rounded="full">Text</button>
+    <button deltafilButton type="button" appearance="elevated" rounded="full">Elevated</button>
+    <button deltafilButton type="button" appearance="outlined" rounded="full">Outlined</button>
+    <button deltafilButton type="button" appearance="filled" rounded="full">Filled</button>
+    <button deltafilButton type="button" appearance="tonal" rounded="full">Tonal</button>
+    <button deltafilButton type="button" appearance="text" rounded="full" disabled>Disabled</button>
+    <button deltafilButton type="button" appearance="filled" variant="primary" rounded="full">
+      Primary
+    </button>
+    <button deltafilButton type="button" appearance="filled" variant="secondary" rounded="full">
+      Secondary
+    </button>
+    <button deltafilButton type="button" appearance="filled" variant="error" rounded="full">
+      Error
+    </button>
+    <button deltafilButton type="button" appearance="icon" rounded="full" aria-label="More">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        class="size-5"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="5" r="1.5" />
+        <circle cx="12" cy="12" r="1.5" />
+        <circle cx="12" cy="19" r="1.5" />
+      </svg>
+    </button>
+    <button deltafilButton type="button" appearance="fab" rounded="lg" aria-label="Delete">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        class="size-6"
+        aria-hidden="true"
+      >
+        <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" />
+      </svg>
+    </button>
+    <button deltafilButton type="button" appearance="mini-fab" rounded="lg" aria-label="Menu">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        class="size-5"
+        aria-hidden="true"
+      >
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
+    </button>
+    <button deltafilButton type="button" appearance="extended-fab" rounded="full">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        class="size-5"
+        aria-hidden="true"
+      >
+        <path
+          d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10z"
+        />
+      </svg>
+      Extended
+    </button>
   </div>
 </main>
 
