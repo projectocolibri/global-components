@@ -1,0 +1,329 @@
+/*
+ * Primitive design values (DeltaFIL company defaults).
+ * Scale follows Tailwind convention: 50–950 (lighter → darker).
+ * Light, dark, and typography each live in their own root block.
+ * Dark values apply when <html> has class "dark" or data-theme="dark"
+ * (resolved by lib/theme.ts; data-theme="system" uses class "dark" when OS is dark).
+ */
+
+/* -------------------------------------------------------------------------- */
+/* Light theme                                                                */
+/* -------------------------------------------------------------------------- */
+:root,
+:root[data-theme='light'] {
+  /* Primary — brand */
+  --ref-primary-50: oklch(0.98 0.015 50);
+  --ref-primary-100: oklch(0.955 0.03 49);
+  --ref-primary-200: oklch(0.91 0.05 48.5);
+  --ref-primary-300: oklch(0.85 0.075 47.8);
+  --ref-primary-400: oklch(0.7823 0.0971 47.1);
+  --ref-primary-500: oklch(0.704 0.1367 46.23);
+  --ref-primary-600: oklch(0.6094 0.1163 46.8);
+  --ref-primary-700: oklch(0.52 0.1 46.5);
+  --ref-primary-800: oklch(0.43 0.08 46.2);
+  --ref-primary-900: oklch(0.37 0.065 46);
+  --ref-primary-950: oklch(0.27 0.04 45.5);
+
+  /* Secondary — neutrals / ink */
+  --ref-secondary-50: oklch(0.985 0 0);
+  --ref-secondary-100: oklch(0.94 0 0);
+  --ref-secondary-200: oklch(0.86 0 0);
+  --ref-secondary-300: oklch(0.74 0 0);
+  --ref-secondary-400: oklch(0.62 0 0);
+  --ref-secondary-500: oklch(0.5 0 0);
+  --ref-secondary-600: oklch(0.4 0 0);
+  --ref-secondary-700: oklch(0.32 0 0);
+  --ref-secondary-800: oklch(0.24 0 0);
+  --ref-secondary-900: oklch(0.17 0 0);
+  --ref-secondary-950: oklch(0.11 0 0);
+
+  /* Background — canvas / soft / panel */
+  --ref-background-50: oklch(0.995 0 0);
+  --ref-background-100: oklch(0.985 0 0);
+  --ref-background-200: oklch(0.97 0 0);
+  --ref-background-300: oklch(0.955 0 0);
+  --ref-background-400: oklch(0.94 0 0);
+  --ref-background-500: oklch(0.92 0 0);
+  --ref-background-600: oklch(0.88 0 0);
+  --ref-background-700: oklch(0.82 0 0);
+  --ref-background-800: oklch(0.74 0 0);
+  --ref-background-900: oklch(0.64 0 0);
+  --ref-background-950: oklch(0.54 0 0);
+
+  /* Feedback — error */
+  --ref-error-50: oklch(0.971 0.013 27.7);
+  --ref-error-100: oklch(0.936 0.032 27.7);
+  --ref-error-200: oklch(0.885 0.062 27.7);
+  --ref-error-300: oklch(0.808 0.105 27.7);
+  --ref-error-400: oklch(0.704 0.152 27.7);
+  --ref-error-500: oklch(0.51 0.19 27.7);
+  --ref-error-600: oklch(0.444 0.177 27.7);
+  --ref-error-700: oklch(0.373 0.152 27.7);
+  --ref-error-800: oklch(0.311 0.124 27.7);
+  --ref-error-900: oklch(0.258 0.095 27.7);
+  --ref-error-950: oklch(0.178 0.057 27.7);
+
+  /* Feedback — warning */
+  --ref-warning-50: oklch(0.987 0.026 97.41);
+  --ref-warning-100: oklch(0.973 0.052 97.41);
+  --ref-warning-200: oklch(0.945 0.095 97.41);
+  --ref-warning-300: oklch(0.905 0.142 97.41);
+  --ref-warning-400: oklch(0.872 0.171 97.41);
+  --ref-warning-500: oklch(0.84 0.19 97.41);
+  --ref-warning-600: oklch(0.746 0.171 97.41);
+  --ref-warning-700: oklch(0.632 0.152 97.41);
+  --ref-warning-800: oklch(0.528 0.124 97.41);
+  --ref-warning-900: oklch(0.441 0.095 97.41);
+  --ref-warning-950: oklch(0.302 0.057 97.41);
+
+  /* Feedback — success */
+  --ref-success-50: oklch(0.972 0.017 154.55);
+  --ref-success-100: oklch(0.942 0.036 154.55);
+  --ref-success-200: oklch(0.891 0.065 154.55);
+  --ref-success-300: oklch(0.821 0.094 154.55);
+  --ref-success-400: oklch(0.722 0.124 154.55);
+  --ref-success-500: oklch(0.5823 0.1453 154.55);
+  --ref-success-600: oklch(0.508 0.131 154.55);
+  --ref-success-700: oklch(0.436 0.11 154.55);
+  --ref-success-800: oklch(0.368 0.087 154.55);
+  --ref-success-900: oklch(0.312 0.07 154.55);
+  --ref-success-950: oklch(0.218 0.044 154.55);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Dark theme                                                                 */
+/* -------------------------------------------------------------------------- */
+:root.dark,
+:root[data-theme='dark'] {
+  /* Primary — brand (lifted for dark surfaces) */
+  --ref-primary-50: oklch(0.27 0.04 45.5);
+  --ref-primary-100: oklch(0.37 0.065 46);
+  --ref-primary-200: oklch(0.43 0.08 46.2);
+  --ref-primary-300: oklch(0.52 0.1 46.5);
+  --ref-primary-400: oklch(0.6094 0.1163 46.8);
+  --ref-primary-500: oklch(0.704 0.1367 46.23);
+  --ref-primary-600: oklch(0.7823 0.0971 47.1);
+  --ref-primary-700: oklch(0.85 0.075 47.8);
+  --ref-primary-800: oklch(0.91 0.05 48.5);
+  --ref-primary-900: oklch(0.955 0.03 49);
+  --ref-primary-950: oklch(0.98 0.015 50);
+
+  /* Secondary — neutrals / ink (inverted) */
+  --ref-secondary-50: oklch(0.11 0 0);
+  --ref-secondary-100: oklch(0.17 0 0);
+  --ref-secondary-200: oklch(0.24 0 0);
+  --ref-secondary-300: oklch(0.32 0 0);
+  --ref-secondary-400: oklch(0.4 0 0);
+  --ref-secondary-500: oklch(0.5 0 0);
+  --ref-secondary-600: oklch(0.62 0 0);
+  --ref-secondary-700: oklch(0.74 0 0);
+  --ref-secondary-800: oklch(0.86 0 0);
+  --ref-secondary-900: oklch(0.94 0 0);
+  --ref-secondary-950: oklch(0.985 0 0);
+
+  /* Background — canvas / soft / panel (inverted) */
+  --ref-background-50: oklch(0.14 0 0);
+  --ref-background-100: oklch(0.18 0 0);
+  --ref-background-200: oklch(0.22 0 0);
+  --ref-background-300: oklch(0.26 0 0);
+  --ref-background-400: oklch(0.3 0 0);
+  --ref-background-500: oklch(0.35 0 0);
+  --ref-background-600: oklch(0.42 0 0);
+  --ref-background-700: oklch(0.5 0 0);
+  --ref-background-800: oklch(0.6 0 0);
+  --ref-background-900: oklch(0.72 0 0);
+  --ref-background-950: oklch(0.86 0 0);
+
+  /* Feedback — error (lifted midtones) */
+  --ref-error-50: oklch(0.178 0.057 27.7);
+  --ref-error-100: oklch(0.258 0.095 27.7);
+  --ref-error-200: oklch(0.311 0.124 27.7);
+  --ref-error-300: oklch(0.373 0.152 27.7);
+  --ref-error-400: oklch(0.444 0.177 27.7);
+  --ref-error-500: oklch(0.58 0.19 27.7);
+  --ref-error-600: oklch(0.704 0.152 27.7);
+  --ref-error-700: oklch(0.808 0.105 27.7);
+  --ref-error-800: oklch(0.885 0.062 27.7);
+  --ref-error-900: oklch(0.936 0.032 27.7);
+  --ref-error-950: oklch(0.971 0.013 27.7);
+
+  /* Feedback — warning (lifted midtones) */
+  --ref-warning-50: oklch(0.302 0.057 97.41);
+  --ref-warning-100: oklch(0.441 0.095 97.41);
+  --ref-warning-200: oklch(0.528 0.124 97.41);
+  --ref-warning-300: oklch(0.632 0.152 97.41);
+  --ref-warning-400: oklch(0.746 0.171 97.41);
+  --ref-warning-500: oklch(0.84 0.19 97.41);
+  --ref-warning-600: oklch(0.872 0.171 97.41);
+  --ref-warning-700: oklch(0.905 0.142 97.41);
+  --ref-warning-800: oklch(0.945 0.095 97.41);
+  --ref-warning-900: oklch(0.973 0.052 97.41);
+  --ref-warning-950: oklch(0.987 0.026 97.41);
+
+  /* Feedback — success (lifted midtones) */
+  --ref-success-50: oklch(0.218 0.044 154.55);
+  --ref-success-100: oklch(0.312 0.07 154.55);
+  --ref-success-200: oklch(0.368 0.087 154.55);
+  --ref-success-300: oklch(0.436 0.11 154.55);
+  --ref-success-400: oklch(0.508 0.131 154.55);
+  --ref-success-500: oklch(0.65 0.1453 154.55);
+  --ref-success-600: oklch(0.722 0.124 154.55);
+  --ref-success-700: oklch(0.821 0.094 154.55);
+  --ref-success-800: oklch(0.891 0.065 154.55);
+  --ref-success-900: oklch(0.942 0.036 154.55);
+  --ref-success-950: oklch(0.972 0.017 154.55);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Typography                                                                 */
+/* -------------------------------------------------------------------------- */
+:root {
+  /* Families */
+  --ref-font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /*Weights*/
+  --ref-font-weight-light: 300;
+  --ref-font-weight-regular: 400;
+  --ref-font-weight-medium: 500;
+  --ref-font-weight-bold: 600;
+  --ref-font-weight-black: 900;
+
+  /* Spacing - button*/
+  --ref-spacing-button-x: 1rem;
+  --ref-spacing-button-y: 0.5rem;
+
+  /* Typography - button */
+  --ref-font-size-button: 0.875rem;
+  --ref-line-height-button: 1.25rem;
+
+  /* Border - button */
+  --ref-border-width-button: 1px;
+  --ref-border-radius-button: 0.5rem;
+
+  /* Surfaces - container */
+  --ref-color-container-canvas: var(--ref-background-50);
+  --ref-color-container-soft: var(--ref-background-100);
+  --ref-color-container-panel: var(--ref-background-200);
+  --ref-color-container-primary: var(--ref-primary-500);
+
+  /* Borders - container */
+  --ref-color-container-border-subtle: var(--ref-secondary-200);
+  --ref-color-container-border-strong: var(--ref-secondary-400);
+  --ref-color-container-border-primary: var(--ref-primary-500);
+  --ref-border-width-container: 1px;
+
+  /* Radius - container */
+  --ref-border-radius-container-sm: 0.25rem;
+  --ref-border-radius-container-md: 0.5rem;
+  --ref-border-radius-container-lg: 0.75rem;
+
+  /* Spacing - container gap */
+  --ref-spacing-container-gap-sm: 0.5rem;
+  --ref-spacing-container-gap-md: 1rem;
+  --ref-spacing-container-gap-lg: 1.5rem;
+
+  /* Spacing - container padding */
+  --ref-spacing-container-padding-sm: 0.5rem;
+  --ref-spacing-container-padding-md: 1rem;
+  --ref-spacing-container-padding-lg: 2rem;
+
+  /* Spacing - container margin (aliases gap scale; tunable separately later) */
+  --ref-spacing-container-margin-sm: var(--ref-spacing-container-gap-sm);
+  --ref-spacing-container-margin-md: var(--ref-spacing-container-gap-md);
+  --ref-spacing-container-margin-lg: var(--ref-spacing-container-gap-lg);
+
+  /* Size - container width/height */
+  /* Intrinsic widths — not CSS `auto` (flex stretch would expand that to full cross size) */
+  --ref-size-container-auto: max-content;
+  --ref-size-container-fit: fit-content;
+  --ref-size-container-full: 100%;
+  --ref-size-container-half: 50%;
+  --ref-size-container-third: 33.333333%;
+  --ref-size-container-two-thirds: 66.666667%;
+  --ref-size-container-quarter: 25%;
+  --ref-size-container-three-quarters: 75%;
+
+  /* Size - percentage sizes minus symmetric margin gutter */
+  --ref-size-container-full-sm: calc(
+    var(--ref-size-container-full) - 2 * var(--ref-spacing-container-margin-sm)
+  );
+  --ref-size-container-full-md: calc(
+    var(--ref-size-container-full) - 2 * var(--ref-spacing-container-margin-md)
+  );
+  --ref-size-container-full-lg: calc(
+    var(--ref-size-container-full) - 2 * var(--ref-spacing-container-margin-lg)
+  );
+  --ref-size-container-half-sm: calc(
+    var(--ref-size-container-half) - 2 * var(--ref-spacing-container-margin-sm)
+  );
+  --ref-size-container-half-md: calc(
+    var(--ref-size-container-half) - 2 * var(--ref-spacing-container-margin-md)
+  );
+  --ref-size-container-half-lg: calc(
+    var(--ref-size-container-half) - 2 * var(--ref-spacing-container-margin-lg)
+  );
+  --ref-size-container-third-sm: calc(
+    var(--ref-size-container-third) - 2 * var(--ref-spacing-container-margin-sm)
+  );
+  --ref-size-container-third-md: calc(
+    var(--ref-size-container-third) - 2 * var(--ref-spacing-container-margin-md)
+  );
+  --ref-size-container-third-lg: calc(
+    var(--ref-size-container-third) - 2 * var(--ref-spacing-container-margin-lg)
+  );
+  --ref-size-container-two-thirds-sm: calc(
+    var(--ref-size-container-two-thirds) - 2 * var(--ref-spacing-container-margin-sm)
+  );
+  --ref-size-container-two-thirds-md: calc(
+    var(--ref-size-container-two-thirds) - 2 * var(--ref-spacing-container-margin-md)
+  );
+  --ref-size-container-two-thirds-lg: calc(
+    var(--ref-size-container-two-thirds) - 2 * var(--ref-spacing-container-margin-lg)
+  );
+  --ref-size-container-quarter-sm: calc(
+    var(--ref-size-container-quarter) - 2 * var(--ref-spacing-container-margin-sm)
+  );
+  --ref-size-container-quarter-md: calc(
+    var(--ref-size-container-quarter) - 2 * var(--ref-spacing-container-margin-md)
+  );
+  --ref-size-container-quarter-lg: calc(
+    var(--ref-size-container-quarter) - 2 * var(--ref-spacing-container-margin-lg)
+  );
+  --ref-size-container-three-quarters-sm: calc(
+    var(--ref-size-container-three-quarters) - 2 * var(--ref-spacing-container-margin-sm)
+  );
+  --ref-size-container-three-quarters-md: calc(
+    var(--ref-size-container-three-quarters) - 2 * var(--ref-spacing-container-margin-md)
+  );
+  --ref-size-container-three-quarters-lg: calc(
+    var(--ref-size-container-three-quarters) - 2 * var(--ref-spacing-container-margin-lg)
+  );
+
+  /* Size - viewport (used by screen) */
+  --ref-size-viewport-width: 100dvw;
+  --ref-size-viewport-height: 100dvh;
+
+  /* Size - screen width (viewport minus optional symmetric margin gutter) */
+  --ref-size-container-screen-width: var(--ref-size-viewport-width);
+  --ref-size-container-screen-width-sm: calc(
+    var(--ref-size-viewport-width) - 2 * var(--ref-spacing-container-margin-sm)
+  );
+  --ref-size-container-screen-width-md: calc(
+    var(--ref-size-viewport-width) - 2 * var(--ref-spacing-container-margin-md)
+  );
+  --ref-size-container-screen-width-lg: calc(
+    var(--ref-size-viewport-width) - 2 * var(--ref-spacing-container-margin-lg)
+  );
+
+  /* Size - screen height (viewport minus optional symmetric margin gutter) */
+  --ref-size-container-screen-height: var(--ref-size-viewport-height);
+  --ref-size-container-screen-height-sm: calc(
+    var(--ref-size-viewport-height) - 2 * var(--ref-spacing-container-margin-sm)
+  );
+  --ref-size-container-screen-height-md: calc(
+    var(--ref-size-viewport-height) - 2 * var(--ref-spacing-container-margin-md)
+  );
+  --ref-size-container-screen-height-lg: calc(
+    var(--ref-size-viewport-height) - 2 * var(--ref-spacing-container-margin-lg)
+  );
+}

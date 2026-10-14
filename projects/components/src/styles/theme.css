@@ -1,19 +1,227 @@
 /*
- * @deltafil/components — Tailwind entry for consumers.
+ * @deltafil/components - canonical Tailwind entry for consumers.
  *
- * Usage in the app's global stylesheet (after Tailwind itself):
- *   @import "tailwindcss";
+ * Usage in the app's global stylesheet:
  *   @import "@deltafil/components/styles/theme.css";
+ *
+ * Apps still install tailwindcss (peer) and @tailwindcss/postcss.
+ * Optional app-local --ref-* overrides go after this import.
+ *
+ * Theme on <html> (see lib/theme.ts):
+ *   data-theme="system" | "light" | "dark"  — preference (default: system)
+ *   class "dark"                            — resolved dark appearance
+ *
+ * Override the dark variant with a selector so manual light/dark works;
+ * system preference is resolved in JS via prefers-color-scheme.
  */
+
+@import 'tailwindcss';
+@import './tokens.css';
 
 /* Scan the library's code for utility classes.
    Matches the .ts sources in this workspace and the .mjs bundles once published. */
 @source "../**/*.{ts,html,mjs}";
 
+@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
+
 /* Design tokens shared by every component in the lib. */
 @theme {
-  --color-primary-50: oklch(0.97 0.02 255);
-  --color-primary-500: oklch(0.62 0.19 255);
-  --color-primary-600: oklch(0.55 0.2 255);
-  --color-primary-700: oklch(0.48 0.18 255);
+  /* Primary */
+  --color-primary-50: var(--ref-primary-50);
+  --color-primary-100: var(--ref-primary-100);
+  --color-primary-200: var(--ref-primary-200);
+  --color-primary-300: var(--ref-primary-300);
+  --color-primary-400: var(--ref-primary-400);
+  --color-primary-500: var(--ref-primary-500);
+  --color-primary-600: var(--ref-primary-600);
+  --color-primary-700: var(--ref-primary-700);
+  --color-primary-800: var(--ref-primary-800);
+  --color-primary-900: var(--ref-primary-900);
+  --color-primary-950: var(--ref-primary-950);
+
+  /* Secondary */
+  --color-secondary-50: var(--ref-secondary-50);
+  --color-secondary-100: var(--ref-secondary-100);
+  --color-secondary-200: var(--ref-secondary-200);
+  --color-secondary-300: var(--ref-secondary-300);
+  --color-secondary-400: var(--ref-secondary-400);
+  --color-secondary-500: var(--ref-secondary-500);
+  --color-secondary-600: var(--ref-secondary-600);
+  --color-secondary-700: var(--ref-secondary-700);
+  --color-secondary-800: var(--ref-secondary-800);
+  --color-secondary-900: var(--ref-secondary-900);
+  --color-secondary-950: var(--ref-secondary-950);
+
+  /* Background */
+  --color-background-50: var(--ref-background-50);
+  --color-background-100: var(--ref-background-100);
+  --color-background-200: var(--ref-background-200);
+  --color-background-300: var(--ref-background-300);
+  --color-background-400: var(--ref-background-400);
+  --color-background-500: var(--ref-background-500);
+  --color-background-600: var(--ref-background-600);
+  --color-background-700: var(--ref-background-700);
+  --color-background-800: var(--ref-background-800);
+  --color-background-900: var(--ref-background-900);
+  --color-background-950: var(--ref-background-950);
+
+  /* Feedback - error */
+  --color-error-50: var(--ref-error-50);
+  --color-error-100: var(--ref-error-100);
+  --color-error-200: var(--ref-error-200);
+  --color-error-300: var(--ref-error-300);
+  --color-error-400: var(--ref-error-400);
+  --color-error-500: var(--ref-error-500);
+  --color-error-600: var(--ref-error-600);
+  --color-error-700: var(--ref-error-700);
+  --color-error-800: var(--ref-error-800);
+  --color-error-900: var(--ref-error-900);
+  --color-error-950: var(--ref-error-950);
+
+  /* Feedback - warning */
+  --color-warning-50: var(--ref-warning-50);
+  --color-warning-100: var(--ref-warning-100);
+  --color-warning-200: var(--ref-warning-200);
+  --color-warning-300: var(--ref-warning-300);
+  --color-warning-400: var(--ref-warning-400);
+  --color-warning-500: var(--ref-warning-500);
+  --color-warning-600: var(--ref-warning-600);
+  --color-warning-700: var(--ref-warning-700);
+  --color-warning-800: var(--ref-warning-800);
+  --color-warning-900: var(--ref-warning-900);
+  --color-warning-950: var(--ref-warning-950);
+
+  /* Feedback - success */
+  --color-success-50: var(--ref-success-50);
+  --color-success-100: var(--ref-success-100);
+  --color-success-200: var(--ref-success-200);
+  --color-success-300: var(--ref-success-300);
+  --color-success-400: var(--ref-success-400);
+  --color-success-500: var(--ref-success-500);
+  --color-success-600: var(--ref-success-600);
+  --color-success-700: var(--ref-success-700);
+  --color-success-800: var(--ref-success-800);
+  --color-success-900: var(--ref-success-900);
+  --color-success-950: var(--ref-success-950);
+
+  /* Typography - families */
+  --font-sans: var(--ref-font-sans);
+
+  /* Typography - weights */
+  --font-weight-light: var(--ref-font-weight-light);
+  --font-weight-regular: var(--ref-font-weight-regular);
+  --font-weight-medium: var(--ref-font-weight-medium);
+  --font-weight-bold: var(--ref-font-weight-bold);
+  --font-weight-black: var(--ref-font-weight-black);
+
+  /* Spacing - button */
+  --spacing-button-x: var(--ref-spacing-button-x);
+  --spacing-button-y: var(--ref-spacing-button-y);
+
+  /* Typography - button (Tailwind uses --text-* → text-*) */
+  --text-button: var(--ref-font-size-button);
+  --text-button--line-height: var(--ref-line-height-button);
+
+  /* Border - button */
+  --border-width-button: var(--ref-border-width-button);
+
+  /* Radius - button (Tailwind uses --radius-* → rounded-*) */
+  --radius-button: var(--ref-border-radius-button);
+
+  /* Colors - container surfaces */
+  --color-container-canvas: var(--ref-color-container-canvas);
+  --color-container-soft: var(--ref-color-container-soft);
+  --color-container-panel: var(--ref-color-container-panel);
+  --color-container-primary: var(--ref-color-container-primary);
+
+  /* Colors - container borders → border-container-subtle|strong (primary reuses --color-container-primary) */
+  --color-container-subtle: var(--ref-color-container-border-subtle);
+  --color-container-strong: var(--ref-color-container-border-strong);
+
+  /* Border - container */
+  --border-width-container: var(--ref-border-width-container);
+
+  /* Radius - container */
+  --radius-container-sm: var(--ref-border-radius-container-sm);
+  --radius-container-md: var(--ref-border-radius-container-md);
+  --radius-container-lg: var(--ref-border-radius-container-lg);
+
+  /* Spacing - container gap → gap-container-sm|md|lg */
+  --spacing-container-sm: var(--ref-spacing-container-gap-sm);
+  --spacing-container-md: var(--ref-spacing-container-gap-md);
+  --spacing-container-lg: var(--ref-spacing-container-gap-lg);
+
+  /* Spacing - container padding → p-container-padding-sm|md|lg */
+  --spacing-container-padding-sm: var(--ref-spacing-container-padding-sm);
+  --spacing-container-padding-md: var(--ref-spacing-container-padding-md);
+  --spacing-container-padding-lg: var(--ref-spacing-container-padding-lg);
+
+  /* Spacing - container margin → m-container-margin-sm|md|lg */
+  --spacing-container-margin-sm: var(--ref-spacing-container-margin-sm);
+  --spacing-container-margin-md: var(--ref-spacing-container-margin-md);
+  --spacing-container-margin-lg: var(--ref-spacing-container-margin-lg);
+
+  /* Width - container → w-container-* (optional -sm|-md|-lg = size minus 2×margin) */
+  --width-container-auto: var(--ref-size-container-auto);
+  --width-container-fit: var(--ref-size-container-fit);
+  --width-container-full: var(--ref-size-container-full);
+  --width-container-full-sm: var(--ref-size-container-full-sm);
+  --width-container-full-md: var(--ref-size-container-full-md);
+  --width-container-full-lg: var(--ref-size-container-full-lg);
+  --width-container-half: var(--ref-size-container-half);
+  --width-container-half-sm: var(--ref-size-container-half-sm);
+  --width-container-half-md: var(--ref-size-container-half-md);
+  --width-container-half-lg: var(--ref-size-container-half-lg);
+  --width-container-third: var(--ref-size-container-third);
+  --width-container-third-sm: var(--ref-size-container-third-sm);
+  --width-container-third-md: var(--ref-size-container-third-md);
+  --width-container-third-lg: var(--ref-size-container-third-lg);
+  --width-container-two-thirds: var(--ref-size-container-two-thirds);
+  --width-container-two-thirds-sm: var(--ref-size-container-two-thirds-sm);
+  --width-container-two-thirds-md: var(--ref-size-container-two-thirds-md);
+  --width-container-two-thirds-lg: var(--ref-size-container-two-thirds-lg);
+  --width-container-quarter: var(--ref-size-container-quarter);
+  --width-container-quarter-sm: var(--ref-size-container-quarter-sm);
+  --width-container-quarter-md: var(--ref-size-container-quarter-md);
+  --width-container-quarter-lg: var(--ref-size-container-quarter-lg);
+  --width-container-three-quarters: var(--ref-size-container-three-quarters);
+  --width-container-three-quarters-sm: var(--ref-size-container-three-quarters-sm);
+  --width-container-three-quarters-md: var(--ref-size-container-three-quarters-md);
+  --width-container-three-quarters-lg: var(--ref-size-container-three-quarters-lg);
+  --width-container-screen: var(--ref-size-container-screen-width);
+  --width-container-screen-sm: var(--ref-size-container-screen-width-sm);
+  --width-container-screen-md: var(--ref-size-container-screen-width-md);
+  --width-container-screen-lg: var(--ref-size-container-screen-width-lg);
+
+  /* Height - container → h-container-* */
+  --height-container-auto: var(--ref-size-container-auto);
+  --height-container-fit: var(--ref-size-container-fit);
+  --height-container-full: var(--ref-size-container-full);
+  --height-container-full-sm: var(--ref-size-container-full-sm);
+  --height-container-full-md: var(--ref-size-container-full-md);
+  --height-container-full-lg: var(--ref-size-container-full-lg);
+  --height-container-half: var(--ref-size-container-half);
+  --height-container-half-sm: var(--ref-size-container-half-sm);
+  --height-container-half-md: var(--ref-size-container-half-md);
+  --height-container-half-lg: var(--ref-size-container-half-lg);
+  --height-container-third: var(--ref-size-container-third);
+  --height-container-third-sm: var(--ref-size-container-third-sm);
+  --height-container-third-md: var(--ref-size-container-third-md);
+  --height-container-third-lg: var(--ref-size-container-third-lg);
+  --height-container-two-thirds: var(--ref-size-container-two-thirds);
+  --height-container-two-thirds-sm: var(--ref-size-container-two-thirds-sm);
+  --height-container-two-thirds-md: var(--ref-size-container-two-thirds-md);
+  --height-container-two-thirds-lg: var(--ref-size-container-two-thirds-lg);
+  --height-container-quarter: var(--ref-size-container-quarter);
+  --height-container-quarter-sm: var(--ref-size-container-quarter-sm);
+  --height-container-quarter-md: var(--ref-size-container-quarter-md);
+  --height-container-quarter-lg: var(--ref-size-container-quarter-lg);
+  --height-container-three-quarters: var(--ref-size-container-three-quarters);
+  --height-container-three-quarters-sm: var(--ref-size-container-three-quarters-sm);
+  --height-container-three-quarters-md: var(--ref-size-container-three-quarters-md);
+  --height-container-three-quarters-lg: var(--ref-size-container-three-quarters-lg);
+  --height-container-screen: var(--ref-size-container-screen-height);
+  --height-container-screen-sm: var(--ref-size-container-screen-height-sm);
+  --height-container-screen-md: var(--ref-size-container-screen-height-md);
+  --height-container-screen-lg: var(--ref-size-container-screen-height-lg);
 }
