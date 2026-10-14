@@ -17,7 +17,7 @@ type ContainerSize =
 type ContainerBackground = 'none' | 'canvas' | 'soft' | 'panel' | 'primary';
 type ContainerBorder = 'none' | 'subtle' | 'strong' | 'primary';
 type ContainerRounded = 'none' | 'sm' | 'md' | 'lg';
-type ContainerOverflow = 'visible' | 'auto' | 'hidden' | 'scroll';
+type ContainerOverflow = 'expand' | 'scroll';
 
 type ContainerRelativeSize = Exclude<ContainerSize, 'auto' | 'fit'>;
 
@@ -66,48 +66,93 @@ const WIDTH_GUTTERED_CLASS: Record<ContainerRelativeSize, Record<ContainerSpacin
   },
 };
 
-const HEIGHT_GUTTERED_CLASS: Record<ContainerRelativeSize, Record<ContainerSpacing, string>> = {
+const MIN_HEIGHT_GUTTERED_CLASS: Record<ContainerRelativeSize, Record<ContainerSpacing, string>> = {
   full: {
-    none: 'h-container-full',
-    sm: 'h-container-full-sm',
-    md: 'h-container-full-md',
-    lg: 'h-container-full-lg',
+    none: 'min-h-container-full',
+    sm: 'min-h-container-full-sm',
+    md: 'min-h-container-full-md',
+    lg: 'min-h-container-full-lg',
   },
   half: {
-    none: 'h-container-half',
-    sm: 'h-container-half-sm',
-    md: 'h-container-half-md',
-    lg: 'h-container-half-lg',
+    none: 'min-h-container-half',
+    sm: 'min-h-container-half-sm',
+    md: 'min-h-container-half-md',
+    lg: 'min-h-container-half-lg',
   },
   third: {
-    none: 'h-container-third',
-    sm: 'h-container-third-sm',
-    md: 'h-container-third-md',
-    lg: 'h-container-third-lg',
+    none: 'min-h-container-third',
+    sm: 'min-h-container-third-sm',
+    md: 'min-h-container-third-md',
+    lg: 'min-h-container-third-lg',
   },
   'two-thirds': {
-    none: 'h-container-two-thirds',
-    sm: 'h-container-two-thirds-sm',
-    md: 'h-container-two-thirds-md',
-    lg: 'h-container-two-thirds-lg',
+    none: 'min-h-container-two-thirds',
+    sm: 'min-h-container-two-thirds-sm',
+    md: 'min-h-container-two-thirds-md',
+    lg: 'min-h-container-two-thirds-lg',
   },
   quarter: {
-    none: 'h-container-quarter',
-    sm: 'h-container-quarter-sm',
-    md: 'h-container-quarter-md',
-    lg: 'h-container-quarter-lg',
+    none: 'min-h-container-quarter',
+    sm: 'min-h-container-quarter-sm',
+    md: 'min-h-container-quarter-md',
+    lg: 'min-h-container-quarter-lg',
   },
   'three-quarters': {
-    none: 'h-container-three-quarters',
-    sm: 'h-container-three-quarters-sm',
-    md: 'h-container-three-quarters-md',
-    lg: 'h-container-three-quarters-lg',
+    none: 'min-h-container-three-quarters',
+    sm: 'min-h-container-three-quarters-sm',
+    md: 'min-h-container-three-quarters-md',
+    lg: 'min-h-container-three-quarters-lg',
   },
   screen: {
-    none: 'h-container-screen',
-    sm: 'h-container-screen-sm',
-    md: 'h-container-screen-md',
-    lg: 'h-container-screen-lg',
+    none: 'min-h-container-screen',
+    sm: 'min-h-container-screen-sm',
+    md: 'min-h-container-screen-md',
+    lg: 'min-h-container-screen-lg',
+  },
+};
+
+const MAX_HEIGHT_GUTTERED_CLASS: Record<ContainerRelativeSize, Record<ContainerSpacing, string>> = {
+  full: {
+    none: 'max-h-container-full',
+    sm: 'max-h-container-full-sm',
+    md: 'max-h-container-full-md',
+    lg: 'max-h-container-full-lg',
+  },
+  half: {
+    none: 'max-h-container-half',
+    sm: 'max-h-container-half-sm',
+    md: 'max-h-container-half-md',
+    lg: 'max-h-container-half-lg',
+  },
+  third: {
+    none: 'max-h-container-third',
+    sm: 'max-h-container-third-sm',
+    md: 'max-h-container-third-md',
+    lg: 'max-h-container-third-lg',
+  },
+  'two-thirds': {
+    none: 'max-h-container-two-thirds',
+    sm: 'max-h-container-two-thirds-sm',
+    md: 'max-h-container-two-thirds-md',
+    lg: 'max-h-container-two-thirds-lg',
+  },
+  quarter: {
+    none: 'max-h-container-quarter',
+    sm: 'max-h-container-quarter-sm',
+    md: 'max-h-container-quarter-md',
+    lg: 'max-h-container-quarter-lg',
+  },
+  'three-quarters': {
+    none: 'max-h-container-three-quarters',
+    sm: 'max-h-container-three-quarters-sm',
+    md: 'max-h-container-three-quarters-md',
+    lg: 'max-h-container-three-quarters-lg',
+  },
+  screen: {
+    none: 'max-h-container-screen',
+    sm: 'max-h-container-screen-sm',
+    md: 'max-h-container-screen-md',
+    lg: 'max-h-container-screen-lg',
   },
 };
 
@@ -125,7 +170,7 @@ const HEIGHT_GUTTERED_CLASS: Record<ContainerRelativeSize, Record<ContainerSpaci
  *   width="screen"
  *   height="screen"
  *   margin="md"
- *   overflow="auto"
+ *   overflow="scroll"
  *   justify="center"
  *   gap="md"
  *   padding="md"
@@ -227,19 +272,22 @@ export class DeltafilContainer {
   readonly width = input<ContainerSize>('full');
 
   /**
-   * How tall the container is.
+   * Minimum height of the container (a floor; content can still grow it
+   * unless `overflow="scroll"`).
    *
    * - `'auto'` (default) — only as tall as the content
-   * - `'full'` — as tall as the parent (parent must have a height)
+   * - `'full'` — at least as tall as the parent (parent must have a height)
    * - `'fit'` — fit the content, with a soft upper limit
-   * - `'half'` — half of the parent
-   * - `'third'` — one third of the parent
-   * - `'two-thirds'` — two thirds of the parent
-   * - `'quarter'` — one quarter of the parent
-   * - `'three-quarters'` — three quarters of the parent
-   * - `'screen'` — as tall as the viewport (good for page shells)
+   * - `'half'` — at least half of the parent
+   * - `'third'` — at least one third of the parent
+   * - `'two-thirds'` — at least two thirds of the parent
+   * - `'quarter'` — at least one quarter of the parent
+   * - `'three-quarters'` — at least three quarters of the parent
+   * - `'screen'` — at least as tall as the viewport (good for page shells)
    *
    * If `margin` is set, relative sizes shrink so the gutter still fits.
+   * With `overflow="scroll"`, the same size is also applied as a max height
+   * so the box does not expand and scrolls inside instead.
    */
   readonly height = input<ContainerSize>('auto');
 
@@ -285,16 +333,15 @@ export class DeltafilContainer {
   readonly wrap = input(false, { transform: booleanAttribute });
 
   /**
-   * How content that does not fit inside the container is handled.
+   * How the container keeps content inside its bounds.
    *
-   * Needs a constrained size (for example `height="screen"`) to take effect.
+   * Content never paints outside the container.
    *
-   * - `'visible'` (default) — content may paint outside the box
-   * - `'auto'` — show a scrollbar only when content overflows
-   * - `'hidden'` — clip overflowing content
-   * - `'scroll'` — always reserve scrollbars
+   * - `'expand'` (default) — grow past `height` with content so everything fits
+   * - `'scroll'` — cap at `height` and scroll inside when content overflows
+   *   (needs a constrained size such as `height="screen"`)
    */
-  readonly overflow = input<ContainerOverflow>('visible');
+  readonly overflow = input<ContainerOverflow>('expand');
 
   readonly hostClass = computed(() =>
     [
@@ -306,7 +353,8 @@ export class DeltafilContainer {
       paddingClass(this.padding()),
       marginClass(this.margin()),
       widthClass(this.width(), this.margin()),
-      heightClass(this.height(), this.margin()),
+      minHeightClass(this.height(), this.margin()),
+      this.overflow() === 'scroll' ? maxHeightClass(this.height(), this.margin()) : '',
       isIntrinsicSize(this.width()) ? 'self-start' : '',
       backgroundClass(this.background()),
       borderClass(this.border()),
@@ -446,12 +494,12 @@ function widthClass(width: ContainerSize, margin: ContainerSpacing): string {
   }
 }
 
-function heightClass(height: ContainerSize, margin: ContainerSpacing): string {
+function minHeightClass(height: ContainerSize, margin: ContainerSpacing): string {
   switch (height) {
     case 'auto':
-      return 'h-container-auto';
+      return 'min-h-container-auto';
     case 'fit':
-      return 'h-container-fit';
+      return 'min-h-container-fit';
     case 'full':
     case 'half':
     case 'third':
@@ -459,7 +507,28 @@ function heightClass(height: ContainerSize, margin: ContainerSpacing): string {
     case 'quarter':
     case 'three-quarters':
     case 'screen':
-      return HEIGHT_GUTTERED_CLASS[height][margin];
+      return MIN_HEIGHT_GUTTERED_CLASS[height][margin];
+    default: {
+      const _exhaustive: never = height;
+      return _exhaustive;
+    }
+  }
+}
+
+function maxHeightClass(height: ContainerSize, margin: ContainerSpacing): string {
+  switch (height) {
+    case 'auto':
+      return 'max-h-container-auto';
+    case 'fit':
+      return 'max-h-container-fit';
+    case 'full':
+    case 'half':
+    case 'third':
+    case 'two-thirds':
+    case 'quarter':
+    case 'three-quarters':
+    case 'screen':
+      return MAX_HEIGHT_GUTTERED_CLASS[height][margin];
     default: {
       const _exhaustive: never = height;
       return _exhaustive;
@@ -522,14 +591,10 @@ function roundedClass(rounded: ContainerRounded): string {
 
 function overflowClass(overflow: ContainerOverflow): string {
   switch (overflow) {
-    case 'visible':
+    case 'expand':
       return '';
-    case 'auto':
-      return 'overflow-auto';
-    case 'hidden':
-      return 'overflow-hidden';
     case 'scroll':
-      return 'overflow-scroll';
+      return 'overflow-auto';
     default: {
       const _exhaustive: never = overflow;
       return _exhaustive;
