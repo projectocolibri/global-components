@@ -188,9 +188,15 @@
   --ref-font-weight-bold: 600;
   --ref-font-weight-black: 900;
 
-  /* Spacing - button*/
+  /* Spacing - button */
   --ref-spacing-button-x: 1rem;
   --ref-spacing-button-y: 0.5rem;
+  --ref-spacing-button-icon: 0.5rem;
+  --ref-spacing-button-extended-x: 1.25rem;
+
+  /* Size - button (FAB hit targets) */
+  --ref-size-button-fab: 3.5rem;
+  --ref-size-button-mini-fab: 2.5rem;
 
   /* Typography - button */
   --ref-font-size-button: 0.875rem;
@@ -198,7 +204,15 @@
 
   /* Border - button */
   --ref-border-width-button: 1px;
-  --ref-border-radius-button: 0.5rem;
+  --ref-border-radius-button-sm: 0.25rem;
+  --ref-border-radius-button-md: 0.5rem;
+  --ref-border-radius-button-lg: 1rem;
+  --ref-border-radius-button-full: 9999px;
+
+  /* Shadow - button */
+  --ref-shadow-button:
+  0 2px 4px 0 oklch(0 0 0 / 0.2),
+  0 4px 10px -2px oklch(0 0 0 / 0.28);
 
   /* Surfaces - container */
   --ref-color-container-canvas: var(--ref-background-50);

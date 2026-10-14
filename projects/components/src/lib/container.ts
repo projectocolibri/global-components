@@ -17,6 +17,7 @@ type ContainerSize =
 type ContainerBackground = 'none' | 'canvas' | 'soft' | 'panel' | 'primary';
 type ContainerBorder = 'none' | 'subtle' | 'strong' | 'primary';
 type ContainerRounded = 'none' | 'sm' | 'md' | 'lg';
+type ContainerOverflow = 'visible' | 'auto' | 'hidden' | 'scroll';
 
 type ContainerRelativeSize = Exclude<ContainerSize, 'auto' | 'fit'>;
 
@@ -113,8 +114,8 @@ const HEIGHT_GUTTERED_CLASS: Record<ContainerRelativeSize, Record<ContainerSpaci
 /**
  * Turns any element into a layout container for arranging children.
  *
- * Control direction, alignment, size, spacing, background, border, and corners
- * with simple inputs (for example `gap="md"` for medium spacing).
+ * Control direction, alignment, size, spacing, overflow, background, border,
+ * and corners with simple inputs (for example `gap="md"` for medium spacing).
  *
  * @example
  * ```html
@@ -124,6 +125,7 @@ const HEIGHT_GUTTERED_CLASS: Record<ContainerRelativeSize, Record<ContainerSpaci
  *   width="screen"
  *   height="screen"
  *   margin="md"
+ *   overflow="auto"
  *   justify="center"
  *   gap="md"
  *   padding="md"
@@ -282,6 +284,18 @@ export class DeltafilContainer {
    */
   readonly wrap = input(false, { transform: booleanAttribute });
 
+  /**
+   * How content that does not fit inside the container is handled.
+   *
+   * Needs a constrained size (for example `height="screen"`) to take effect.
+   *
+   * - `'visible'` (default) — content may paint outside the box
+   * - `'auto'` — show a scrollbar only when content overflows
+   * - `'hidden'` — clip overflowing content
+   * - `'scroll'` — always reserve scrollbars
+   */
+  readonly overflow = input<ContainerOverflow>('visible');
+
   readonly hostClass = computed(() =>
     [
       'flex',
@@ -297,6 +311,7 @@ export class DeltafilContainer {
       backgroundClass(this.background()),
       borderClass(this.border()),
       roundedClass(this.rounded()),
+      overflowClass(this.overflow()),
       this.wrap() ? 'flex-wrap' : '',
     ]
       .filter(Boolean)
@@ -500,6 +515,23 @@ function roundedClass(rounded: ContainerRounded): string {
       return 'rounded-container-lg';
     default: {
       const _exhaustive: never = rounded;
+      return _exhaustive;
+    }
+  }
+}
+
+function overflowClass(overflow: ContainerOverflow): string {
+  switch (overflow) {
+    case 'visible':
+      return '';
+    case 'auto':
+      return 'overflow-auto';
+    case 'hidden':
+      return 'overflow-hidden';
+    case 'scroll':
+      return 'overflow-scroll';
+    default: {
+      const _exhaustive: never = overflow;
       return _exhaustive;
     }
   }

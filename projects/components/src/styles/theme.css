@@ -114,9 +114,13 @@
   --font-weight-bold: var(--ref-font-weight-bold);
   --font-weight-black: var(--ref-font-weight-black);
 
-  /* Spacing - button */
+  /* Spacing - button → px-button-x|y, p-button-icon, px-button-extended-x, size-button-fab|mini-fab */
   --spacing-button-x: var(--ref-spacing-button-x);
   --spacing-button-y: var(--ref-spacing-button-y);
+  --spacing-button-icon: var(--ref-spacing-button-icon);
+  --spacing-button-extended-x: var(--ref-spacing-button-extended-x);
+  --spacing-button-fab: var(--ref-size-button-fab);
+  --spacing-button-mini-fab: var(--ref-size-button-mini-fab);
 
   /* Typography - button (Tailwind uses --text-* → text-*) */
   --text-button: var(--ref-font-size-button);
@@ -126,7 +130,13 @@
   --border-width-button: var(--ref-border-width-button);
 
   /* Radius - button (Tailwind uses --radius-* → rounded-*) */
-  --radius-button: var(--ref-border-radius-button);
+  --radius-button-sm: var(--ref-border-radius-button-sm);
+  --radius-button-md: var(--ref-border-radius-button-md);
+  --radius-button-lg: var(--ref-border-radius-button-lg);
+  --radius-button-full: var(--ref-border-radius-button-full);
+
+  /* Shadow - button (Tailwind uses --shadow-* → shadow-*) */
+  --shadow-button: var(--ref-shadow-button);
 
   /* Colors - container surfaces */
   --color-container-canvas: var(--ref-color-container-canvas);
