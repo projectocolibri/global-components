@@ -340,4 +340,7 @@
   --ref-size-container-screen-height-lg: calc(
     var(--ref-size-viewport-height) - 2 * var(--ref-spacing-container-margin-lg)
   );
+
+  /* Size - sidebar rail — fits 4 icon buttons + gap-sm + padding-sm */
+  --ref-size-sidebar: 13rem;
 }

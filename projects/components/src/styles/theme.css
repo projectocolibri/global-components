@@ -266,4 +266,7 @@
   --max-height-container-screen-sm: var(--ref-size-container-screen-height-sm);
   --max-height-container-screen-md: var(--ref-size-container-screen-height-md);
   --max-height-container-screen-lg: var(--ref-size-container-screen-height-lg);
+
+  /* Width - sidebar → w-sidebar */
+  --width-sidebar: var(--ref-size-sidebar);
 }

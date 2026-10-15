@@ -333,6 +333,17 @@ export class DeltafilContainer {
   readonly wrap = input(false, { transform: booleanAttribute });
 
   /**
+   * Expand to fill free space in a flex parent (for example main next to a sidebar).
+   *
+   * Use as `grow` or `[grow]="true"`. When true, `width` is ignored so the box
+   * does not force `100%` of the parent and overflow the row.
+   *
+   * - `false` (default) — size from `width`
+   * - `true` — `flex-1 min-w-0`
+   */
+  readonly grow = input(false, { transform: booleanAttribute });
+
+  /**
    * How the container keeps content inside its bounds.
    *
    * Content never paints outside the container.
@@ -352,10 +363,10 @@ export class DeltafilContainer {
       gapClass(this.gap()),
       paddingClass(this.padding()),
       marginClass(this.margin()),
-      widthClass(this.width(), this.margin()),
+      this.grow() ? 'flex-1 min-w-0' : widthClass(this.width(), this.margin()),
       minHeightClass(this.height(), this.margin()),
       this.overflow() === 'scroll' ? maxHeightClass(this.height(), this.margin()) : '',
-      isIntrinsicSize(this.width()) ? 'self-start' : '',
+      !this.grow() && isIntrinsicSize(this.width()) ? 'self-start' : '',
       backgroundClass(this.background()),
       borderClass(this.border()),
       roundedClass(this.rounded()),

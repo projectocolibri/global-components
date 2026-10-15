@@ -4,5 +4,6 @@
 
 export * from './lib/button';
 export * from './lib/container';
+export * from './lib/sidebar';
 export * from './lib/theme';
 
