@@ -10,9 +10,9 @@ import {
 } from '../../../components/src/lib/sidebar';
 import {
   initTheme,
-  setThemePreference,
+  setTheme,
   subscribeTheme,
-  type ThemePreference,
+  type Theme,
 } from '../../../components/src/lib/theme';
 
 export type DemoPage = 'overview' | 'button' | 'container' | 'sidebar';
@@ -26,7 +26,7 @@ export type DemoPage = 'overview' | 'button' | 'container' | 'sidebar';
 export class App {
   private readonly destroyRef = inject(DestroyRef);
 
-  protected readonly themePreference = signal<ThemePreference>('system');
+  protected readonly themePreference = signal<Theme>('system');
   protected readonly isDark = signal(false);
   protected readonly sidebarCollapsed = signal(false);
   protected readonly sidebarExpansion = signal<SidebarExpansion>('adjacent');
@@ -47,15 +47,13 @@ export class App {
 
   constructor() {
     afterNextRender(() => {
-      const state = initTheme();
-      this.themePreference.set(state.preference);
-      this.isDark.set(state.isDark);
-
-      const unsubscribe = subscribeTheme(({ preference, isDark }) => {
-        this.themePreference.set(preference);
-        this.isDark.set(isDark);
+      const unsubscribe = subscribeTheme((theme, appliedTheme) => {
+        this.themePreference.set(theme);
+        this.isDark.set(appliedTheme === 'dark');
       });
       this.destroyRef.onDestroy(unsubscribe);
+
+      initTheme();
     });
   }
 
@@ -78,11 +76,11 @@ export class App {
   }
 
   toggleDarkMode(): void {
-    setThemePreference(this.isDark() ? 'light' : 'dark');
+    setTheme(this.isDark() ? 'light' : 'dark');
   }
 
   useSystemTheme(): void {
-    setThemePreference('system');
+    setTheme('system');
   }
 
   toggleSidebarCollapsed(): void {

@@ -3,148 +3,67 @@
  *
  * Contract on `<html>`:
  * - `data-theme="system" | "light" | "dark"` — user preference (`system` is default)
- * - class `dark` — resolved appearance when the effective theme is dark
+ * - class `dark` — resolved appearance; style dark mode off this, since
+ *   `data-theme` stays `system` even when the OS is dark
  *
- * Tailwind `dark:` and token overrides key off the resolved `.dark` class
- * (and `data-theme="dark"`). System mode is resolved here via
- * `prefers-color-scheme`, matching
- * https://tailwindcss.com/docs/dark-mode#with-system-theme-support
+ * Follows https://tailwindcss.com/docs/dark-mode#with-system-theme-support
  */
 
-export type ThemePreference = 'system' | 'light' | 'dark';
+export type Theme = 'system' | 'light' | 'dark';
 
-export type ThemeState = {
-  preference: ThemePreference;
-  isDark: boolean;
-};
-
-type ThemeListener = (state: ThemeState) => void;
+type ThemeListener = (theme: Theme, appliedTheme: 'light' | 'dark') => void;
 
 const STORAGE_KEY = 'deltafil-theme';
 
 const listeners = new Set<ThemeListener>();
 
-let mediaQueryList: MediaQueryList | null = null;
-let mediaListener: ((event: MediaQueryListEvent) => void) | null = null;
+const media = () => window.matchMedia('(prefers-color-scheme: dark)');
 
-function isBrowser(): boolean {
-  return typeof document !== 'undefined' && typeof window !== 'undefined';
-}
-
-function notify(state: ThemeState): void {
-  for (const listener of listeners) {
-    listener(state);
-  }
-}
-
-function syncMediaListener(preference: ThemePreference): void {
-  if (!isBrowser()) {
-    return;
-  }
-
-  if (mediaQueryList && mediaListener) {
-    mediaQueryList.removeEventListener('change', mediaListener);
-    mediaQueryList = null;
-    mediaListener = null;
-  }
-
-  if (preference !== 'system') {
-    return;
-  }
-
-  mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
-  mediaListener = () => {
-    applyTheme('system');
-  };
-  mediaQueryList.addEventListener('change', mediaListener);
-}
-
-/**
- * Reads the stored preference. Missing or unknown values mean `system`.
- */
-export function getThemePreference(): ThemePreference {
-  if (!isBrowser()) {
-    return 'system';
-  }
-
+/** Stored preference. Missing or unknown values mean `system`. */
+export function getTheme(): Theme {
   const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored === 'light' || stored === 'dark') {
-    return stored;
-  }
-
-  return 'system';
+  return stored === 'light' || stored === 'dark' ? stored : 'system';
 }
 
-/**
- * Resolves whether the effective appearance is dark for a preference.
- */
-export function resolveIsDark(preference: ThemePreference = getThemePreference()): boolean {
-  switch (preference) {
-    case 'dark':
-      return true;
-    case 'light':
-      return false;
-    case 'system':
-      if (!isBrowser()) {
-        return false;
-      }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
-    default: {
-      const _exhaustive: never = preference;
-      return _exhaustive;
-    }
-  }
+/** Whether the page is currently rendered dark. */
+export function isDark(): boolean {
+  return document.documentElement.classList.contains('dark');
 }
 
-/**
- * Writes the resolved `dark` class and `data-theme` preference on `<html>`.
- */
-export function applyTheme(preference: ThemePreference): void {
-  if (!isBrowser()) {
-    return;
-  }
-
-  const isDark = resolveIsDark(preference);
-  document.documentElement.classList.toggle('dark', isDark);
-  document.documentElement.setAttribute('data-theme', preference);
-  syncMediaListener(preference);
-  notify({ preference, isDark });
+function apply(): void {
+  const theme = getTheme();
+  const dark = theme === 'dark' || (theme === 'system' && media().matches);
+  const appliedTheme = dark ? 'dark' : 'light';
+  document.documentElement.classList.toggle('dark', dark);
+  document.documentElement.dataset['theme'] = theme;
+  listeners.forEach((listener) => listener(theme, appliedTheme));
 }
 
-/**
- * Persists preference and applies it. `system` clears storage so default
- * remains OS-driven.
- */
-export function setThemePreference(preference: ThemePreference): void {
-  if (!isBrowser()) {
-    return;
-  }
-
-  if (preference === 'system') {
+/** Persists and applies a preference. `system` clears storage so the OS decides. */
+export function setTheme(theme: Theme): void {
+  if (theme === 'system') {
     localStorage.removeItem(STORAGE_KEY);
   } else {
-    localStorage.setItem(STORAGE_KEY, preference);
+    localStorage.setItem(STORAGE_KEY, theme);
   }
-
-  applyTheme(preference);
+  apply();
 }
 
 /**
- * Applies the stored preference (or `system`) and starts OS listening when needed.
+ * Applies the stored preference and follows OS changes. The OS listener is
+ * harmless outside `system` mode because `apply` re-reads the preference.
+ * No-op outside the browser (SSR).
  */
-export function initTheme(): ThemeState {
-  const preference = getThemePreference();
-  applyTheme(preference);
-  return { preference, isDark: resolveIsDark(preference) };
+export function initTheme(): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
+  apply();
+  media().addEventListener('change', apply);
 }
 
-/**
- * Subscribes to theme changes (manual set or OS change in system mode).
- * Returns an unsubscribe function.
- */
+/** Calls `listener` on every theme change. Returns an unsubscribe function. */
 export function subscribeTheme(listener: ThemeListener): () => void {
   listeners.add(listener);
-  return () => {
-    listeners.delete(listener);
-  };
+  return () => listeners.delete(listener);
 }
