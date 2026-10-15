@@ -1,0 +1,136 @@
+/*
+ * Container — layout tokens as Tailwind theme variables.
+ *
+ *   border-container-subtle|strong|primary
+ *   gap-container-sm|md|lg   p-container-padding-*   m-container-margin-*
+ *   w-container-*  min-h-container-*  max-h-container-*  rounded-container-*
+ *
+ * Sizes with -sm|-md|-lg subtract the matching margin on both sides so the box fits.
+ * Background comes from the `color` input (any theme color, see core/surface.ts);
+ * border colors alias the semantic colors in theme.css.
+ * `static` keeps every value, since the sizes reference the margin tokens through var().
+ */
+
+@theme static {
+  /* Colors - borders */
+  --color-container-primary: var(--color-primary);
+  --color-container-subtle: var(--color-border);
+  --color-container-strong: var(--color-border-strong);
+
+  /* Border and radius */
+  --border-width-container: 1px;
+  --radius-container-sm: var(--radius-sm);
+  --radius-container-md: var(--radius-lg);
+  --radius-container-lg: var(--radius-xl);
+
+  /* Spacing - gap */
+  --spacing-container-sm: calc(var(--spacing) * 2);
+  --spacing-container-md: calc(var(--spacing) * 4);
+  --spacing-container-lg: calc(var(--spacing) * 6);
+
+  /* Spacing - padding */
+  --spacing-container-padding-sm: calc(var(--spacing) * 2);
+  --spacing-container-padding-md: calc(var(--spacing) * 4);
+  --spacing-container-padding-lg: calc(var(--spacing) * 8);
+
+  /* Spacing - margin (same scale as gap) */
+  --spacing-container-margin-sm: var(--spacing-container-sm);
+  --spacing-container-margin-md: var(--spacing-container-md);
+  --spacing-container-margin-lg: var(--spacing-container-lg);
+
+  /* Width — auto/fit are intrinsic, not CSS `auto` (flex stretch would expand that) */
+  --width-container-auto: max-content;
+  --width-container-fit: fit-content;
+  --width-container-full: 100%;
+  --width-container-full-sm: calc(100% - 2 * var(--spacing-container-margin-sm));
+  --width-container-full-md: calc(100% - 2 * var(--spacing-container-margin-md));
+  --width-container-full-lg: calc(100% - 2 * var(--spacing-container-margin-lg));
+  --width-container-half: 50%;
+  --width-container-half-sm: calc(50% - 2 * var(--spacing-container-margin-sm));
+  --width-container-half-md: calc(50% - 2 * var(--spacing-container-margin-md));
+  --width-container-half-lg: calc(50% - 2 * var(--spacing-container-margin-lg));
+  --width-container-third: 33.333333%;
+  --width-container-third-sm: calc(33.333333% - 2 * var(--spacing-container-margin-sm));
+  --width-container-third-md: calc(33.333333% - 2 * var(--spacing-container-margin-md));
+  --width-container-third-lg: calc(33.333333% - 2 * var(--spacing-container-margin-lg));
+  --width-container-two-thirds: 66.666667%;
+  --width-container-two-thirds-sm: calc(66.666667% - 2 * var(--spacing-container-margin-sm));
+  --width-container-two-thirds-md: calc(66.666667% - 2 * var(--spacing-container-margin-md));
+  --width-container-two-thirds-lg: calc(66.666667% - 2 * var(--spacing-container-margin-lg));
+  --width-container-quarter: 25%;
+  --width-container-quarter-sm: calc(25% - 2 * var(--spacing-container-margin-sm));
+  --width-container-quarter-md: calc(25% - 2 * var(--spacing-container-margin-md));
+  --width-container-quarter-lg: calc(25% - 2 * var(--spacing-container-margin-lg));
+  --width-container-three-quarters: 75%;
+  --width-container-three-quarters-sm: calc(75% - 2 * var(--spacing-container-margin-sm));
+  --width-container-three-quarters-md: calc(75% - 2 * var(--spacing-container-margin-md));
+  --width-container-three-quarters-lg: calc(75% - 2 * var(--spacing-container-margin-lg));
+  --width-container-screen: 100dvw;
+  --width-container-screen-sm: calc(100dvw - 2 * var(--spacing-container-margin-sm));
+  --width-container-screen-md: calc(100dvw - 2 * var(--spacing-container-margin-md));
+  --width-container-screen-lg: calc(100dvw - 2 * var(--spacing-container-margin-lg));
+
+  /* Min height */
+  --min-height-container-auto: max-content;
+  --min-height-container-fit: fit-content;
+  --min-height-container-full: 100%;
+  --min-height-container-full-sm: calc(100% - 2 * var(--spacing-container-margin-sm));
+  --min-height-container-full-md: calc(100% - 2 * var(--spacing-container-margin-md));
+  --min-height-container-full-lg: calc(100% - 2 * var(--spacing-container-margin-lg));
+  --min-height-container-half: 50%;
+  --min-height-container-half-sm: calc(50% - 2 * var(--spacing-container-margin-sm));
+  --min-height-container-half-md: calc(50% - 2 * var(--spacing-container-margin-md));
+  --min-height-container-half-lg: calc(50% - 2 * var(--spacing-container-margin-lg));
+  --min-height-container-third: 33.333333%;
+  --min-height-container-third-sm: calc(33.333333% - 2 * var(--spacing-container-margin-sm));
+  --min-height-container-third-md: calc(33.333333% - 2 * var(--spacing-container-margin-md));
+  --min-height-container-third-lg: calc(33.333333% - 2 * var(--spacing-container-margin-lg));
+  --min-height-container-two-thirds: 66.666667%;
+  --min-height-container-two-thirds-sm: calc(66.666667% - 2 * var(--spacing-container-margin-sm));
+  --min-height-container-two-thirds-md: calc(66.666667% - 2 * var(--spacing-container-margin-md));
+  --min-height-container-two-thirds-lg: calc(66.666667% - 2 * var(--spacing-container-margin-lg));
+  --min-height-container-quarter: 25%;
+  --min-height-container-quarter-sm: calc(25% - 2 * var(--spacing-container-margin-sm));
+  --min-height-container-quarter-md: calc(25% - 2 * var(--spacing-container-margin-md));
+  --min-height-container-quarter-lg: calc(25% - 2 * var(--spacing-container-margin-lg));
+  --min-height-container-three-quarters: 75%;
+  --min-height-container-three-quarters-sm: calc(75% - 2 * var(--spacing-container-margin-sm));
+  --min-height-container-three-quarters-md: calc(75% - 2 * var(--spacing-container-margin-md));
+  --min-height-container-three-quarters-lg: calc(75% - 2 * var(--spacing-container-margin-lg));
+  --min-height-container-screen: 100dvh;
+  --min-height-container-screen-sm: calc(100dvh - 2 * var(--spacing-container-margin-sm));
+  --min-height-container-screen-md: calc(100dvh - 2 * var(--spacing-container-margin-md));
+  --min-height-container-screen-lg: calc(100dvh - 2 * var(--spacing-container-margin-lg));
+
+  /* Max height (used with overflow="scroll") */
+  --max-height-container-auto: max-content;
+  --max-height-container-fit: fit-content;
+  --max-height-container-full: 100%;
+  --max-height-container-full-sm: calc(100% - 2 * var(--spacing-container-margin-sm));
+  --max-height-container-full-md: calc(100% - 2 * var(--spacing-container-margin-md));
+  --max-height-container-full-lg: calc(100% - 2 * var(--spacing-container-margin-lg));
+  --max-height-container-half: 50%;
+  --max-height-container-half-sm: calc(50% - 2 * var(--spacing-container-margin-sm));
+  --max-height-container-half-md: calc(50% - 2 * var(--spacing-container-margin-md));
+  --max-height-container-half-lg: calc(50% - 2 * var(--spacing-container-margin-lg));
+  --max-height-container-third: 33.333333%;
+  --max-height-container-third-sm: calc(33.333333% - 2 * var(--spacing-container-margin-sm));
+  --max-height-container-third-md: calc(33.333333% - 2 * var(--spacing-container-margin-md));
+  --max-height-container-third-lg: calc(33.333333% - 2 * var(--spacing-container-margin-lg));
+  --max-height-container-two-thirds: 66.666667%;
+  --max-height-container-two-thirds-sm: calc(66.666667% - 2 * var(--spacing-container-margin-sm));
+  --max-height-container-two-thirds-md: calc(66.666667% - 2 * var(--spacing-container-margin-md));
+  --max-height-container-two-thirds-lg: calc(66.666667% - 2 * var(--spacing-container-margin-lg));
+  --max-height-container-quarter: 25%;
+  --max-height-container-quarter-sm: calc(25% - 2 * var(--spacing-container-margin-sm));
+  --max-height-container-quarter-md: calc(25% - 2 * var(--spacing-container-margin-md));
+  --max-height-container-quarter-lg: calc(25% - 2 * var(--spacing-container-margin-lg));
+  --max-height-container-three-quarters: 75%;
+  --max-height-container-three-quarters-sm: calc(75% - 2 * var(--spacing-container-margin-sm));
+  --max-height-container-three-quarters-md: calc(75% - 2 * var(--spacing-container-margin-md));
+  --max-height-container-three-quarters-lg: calc(75% - 2 * var(--spacing-container-margin-lg));
+  --max-height-container-screen: 100dvh;
+  --max-height-container-screen-sm: calc(100dvh - 2 * var(--spacing-container-margin-sm));
+  --max-height-container-screen-md: calc(100dvh - 2 * var(--spacing-container-margin-md));
+  --max-height-container-screen-lg: calc(100dvh - 2 * var(--spacing-container-margin-lg));
+}

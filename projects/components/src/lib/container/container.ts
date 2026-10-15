@@ -1,10 +1,12 @@
-import { booleanAttribute, computed, Directive, input } from '@angular/core';
+import { booleanAttribute, computed, Directive, inject, input } from '@angular/core';
+import { DC_COLOR_SURFACE_CLASS, DcColor } from '../color';
+import { classNames, surfaceBorderColorClass, type SurfaceBorder } from '../core';
 
-type ContainerDirection = 'horizontal' | 'vertical';
-type ContainerAlign = 'start' | 'center' | 'end' | 'stretch';
-type ContainerJustify = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
-type ContainerSpacing = 'none' | 'sm' | 'md' | 'lg';
-type ContainerSize =
+export type ContainerDirection = 'horizontal' | 'vertical';
+export type ContainerAlign = 'start' | 'center' | 'end' | 'stretch';
+export type ContainerJustify = 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
+export type ContainerSpacing = 'none' | 'sm' | 'md' | 'lg';
+export type ContainerSize =
   | 'auto'
   | 'fit'
   | 'full'
@@ -14,10 +16,8 @@ type ContainerSize =
   | 'quarter'
   | 'three-quarters'
   | 'screen';
-type ContainerBackground = 'none' | 'canvas' | 'soft' | 'panel' | 'primary';
-type ContainerBorder = 'none' | 'subtle' | 'strong' | 'primary';
-type ContainerRounded = 'none' | 'sm' | 'md' | 'lg';
-type ContainerOverflow = 'expand' | 'scroll';
+export type ContainerRounded = 'none' | 'sm' | 'md' | 'lg';
+export type ContainerOverflow = 'expand' | 'scroll';
 
 type ContainerRelativeSize = Exclude<ContainerSize, 'auto' | 'fit'>;
 
@@ -159,13 +159,13 @@ const MAX_HEIGHT_GUTTERED_CLASS: Record<ContainerRelativeSize, Record<ContainerS
 /**
  * Turns any element into a layout container for arranging children.
  *
- * Control direction, alignment, size, spacing, overflow, background, border,
+ * Control direction, alignment, size, spacing, overflow, color, border,
  * and corners with simple inputs (for example `gap="md"` for medium spacing).
  *
  * @example
  * ```html
  * <div
- *   deltafilContainer
+ *   dc-container
  *   direction="horizontal"
  *   width="screen"
  *   height="screen"
@@ -174,7 +174,7 @@ const MAX_HEIGHT_GUTTERED_CLASS: Record<ContainerRelativeSize, Record<ContainerS
  *   justify="center"
  *   gap="md"
  *   padding="md"
- *   background="soft"
+ *   color="surface-100"
  *   border="subtle"
  *   rounded="md"
  * >
@@ -183,12 +183,13 @@ const MAX_HEIGHT_GUTTERED_CLASS: Record<ContainerRelativeSize, Record<ContainerS
  * ```
  */
 @Directive({
-  selector: '[deltafilContainer]',
+  selector: '[dc-container]',
+  hostDirectives: [{ directive: DcColor, inputs: ['color'] }],
   host: {
     '[class]': 'hostClass()',
   },
 })
-export class DeltafilContainer {
+export class DcContainer {
   /**
    * How children are stacked.
    *
@@ -292,15 +293,11 @@ export class DeltafilContainer {
   readonly height = input<ContainerSize>('auto');
 
   /**
-   * Background color / surface.
-   *
-   * - `'none'` (default) — transparent
-   * - `'canvas'` — page background
-   * - `'soft'` — light muted surface
-   * - `'panel'` — slightly stronger panel surface
-   * - `'primary'` — brand / primary color
+   * Background comes from the `color` input (composed `dc-color`), with text in
+   * its matching `-foreground` color: `'background'` (page), `'surface-100'`,
+   * `'surface-200'` (panels), `'primary'`, `'success-100'`… Unset is transparent.
    */
-  readonly background = input<ContainerBackground>('none');
+  private readonly colorState = inject(DcColor, { self: true });
 
   /**
    * Border around the container.
@@ -310,7 +307,7 @@ export class DeltafilContainer {
    * - `'strong'` — stronger, more visible border
    * - `'primary'` — brand / primary border
    */
-  readonly border = input<ContainerBorder>('none');
+  readonly border = input<SurfaceBorder>('none');
 
   /**
    * How rounded the corners are.
@@ -355,7 +352,7 @@ export class DeltafilContainer {
   readonly overflow = input<ContainerOverflow>('expand');
 
   readonly hostClass = computed(() =>
-    [
+    classNames(
       'flex',
       directionClass(this.direction()),
       alignClass(this.align()),
@@ -365,16 +362,14 @@ export class DeltafilContainer {
       marginClass(this.margin()),
       this.grow() ? 'flex-1 min-w-0' : widthClass(this.width(), this.margin()),
       minHeightClass(this.height(), this.margin()),
-      this.overflow() === 'scroll' ? maxHeightClass(this.height(), this.margin()) : '',
-      !this.grow() && isIntrinsicSize(this.width()) ? 'self-start' : '',
-      backgroundClass(this.background()),
-      borderClass(this.border()),
+      this.overflow() === 'scroll' && maxHeightClass(this.height(), this.margin()),
+      !this.grow() && isIntrinsicSize(this.width()) && 'self-start',
+      this.colorState.color() && DC_COLOR_SURFACE_CLASS,
+      this.border() !== 'none' && ['border-container', surfaceBorderColorClass(this.border())],
       roundedClass(this.rounded()),
       overflowClass(this.overflow()),
-      this.wrap() ? 'flex-wrap' : '',
-    ]
-      .filter(Boolean)
-      .join(' '),
+      this.wrap() && 'flex-wrap',
+    ),
   );
 }
 
@@ -542,42 +537,6 @@ function maxHeightClass(height: ContainerSize, margin: ContainerSpacing): string
       return MAX_HEIGHT_GUTTERED_CLASS[height][margin];
     default: {
       const _exhaustive: never = height;
-      return _exhaustive;
-    }
-  }
-}
-
-function backgroundClass(background: ContainerBackground): string {
-  switch (background) {
-    case 'none':
-      return '';
-    case 'canvas':
-      return 'bg-container-canvas';
-    case 'soft':
-      return 'bg-container-soft';
-    case 'panel':
-      return 'bg-container-panel';
-    case 'primary':
-      return 'bg-container-primary';
-    default: {
-      const _exhaustive: never = background;
-      return _exhaustive;
-    }
-  }
-}
-
-function borderClass(border: ContainerBorder): string {
-  switch (border) {
-    case 'none':
-      return '';
-    case 'subtle':
-      return 'border-container border-container-subtle';
-    case 'strong':
-      return 'border-container border-container-strong';
-    case 'primary':
-      return 'border-container border-container-primary';
-    default: {
-      const _exhaustive: never = border;
       return _exhaustive;
     }
   }

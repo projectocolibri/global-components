@@ -1,13 +1,13 @@
 import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
-  DeltafilSidebar,
-  DeltafilSidebarItem,
-  type SidebarBackground,
+  DcSidebar,
+  DcSidebarItem,
   type SidebarBorder,
   type SidebarExpansion,
   type SidebarItem,
-} from './sidebar';
+} from './index';
+import type { DcColorName } from '../color';
 
 const SAMPLE_ITEMS: SidebarItem[] = [
   {
@@ -22,14 +22,14 @@ const SAMPLE_ITEMS: SidebarItem[] = [
 ];
 
 @Component({
-  imports: [DeltafilSidebar],
+  imports: [DcSidebar],
   template: `
-    <deltafil-sidebar
+    <dc-sidebar
       [items]="items"
       [expansion]="expansion()"
       [collapsed]="collapsed()"
       [activeId]="activeId()"
-      [background]="background()"
+      [color]="color()"
       [border]="border()"
       (select)="onSelect($event)"
     />
@@ -40,7 +40,7 @@ class SidebarHost {
   readonly expansion = signal<SidebarExpansion>('inline');
   readonly collapsed = signal(false);
   readonly activeId = signal<string | null>(null);
-  readonly background = signal<SidebarBackground>('panel');
+  readonly color = signal<DcColorName | undefined>('surface-200');
   readonly border = signal<SidebarBorder>('subtle');
   readonly selected = signal<SidebarItem | null>(null);
 
@@ -50,18 +50,18 @@ class SidebarHost {
 }
 
 @Component({
-  imports: [DeltafilSidebar, DeltafilSidebarItem],
+  imports: [DcSidebar, DcSidebarItem],
   template: `
-    <deltafil-sidebar [items]="items" [activeId]="'docs'">
-      <ng-template deltafilSidebarItem let-item>custom:{{ item.label }}</ng-template>
-    </deltafil-sidebar>
+    <dc-sidebar [items]="items" [activeId]="'docs'">
+      <ng-template dc-sidebar-item let-item>custom:{{ item.label }}</ng-template>
+    </dc-sidebar>
   `,
 })
 class SidebarTemplateHost {
   readonly items = SAMPLE_ITEMS;
 }
 
-describe('DeltafilSidebar', () => {
+describe('DcSidebar', () => {
   async function setup(): Promise<{
     fixture: ComponentFixture<SidebarHost>;
     host: SidebarHost;
@@ -78,7 +78,7 @@ describe('DeltafilSidebar', () => {
 
   function buttons(fixture: ComponentFixture<unknown>): HTMLButtonElement[] {
     return Array.from(
-      (fixture.nativeElement as HTMLElement).querySelectorAll('deltafil-sidebar button'),
+      (fixture.nativeElement as HTMLElement).querySelectorAll('dc-sidebar button'),
     );
   }
 
@@ -172,7 +172,7 @@ describe('DeltafilSidebar', () => {
   it('animates the sidebar closed when collapsed', async () => {
     const { fixture, host } = await setup();
     const sidebar = (fixture.nativeElement as HTMLElement).querySelector(
-      'deltafil-sidebar',
+      'dc-sidebar',
     ) as HTMLElement;
     const rail = sidebar.firstElementChild as HTMLElement;
 
@@ -190,40 +190,45 @@ describe('DeltafilSidebar', () => {
     expect(rail.classList.contains('w-sidebar')).toBe(false);
   });
 
-  it('applies background, border, and synced content tones', async () => {
+  it('paints any theme color with its foreground and tints rows from it', async () => {
     const { fixture, host } = await setup();
     const sidebar = (fixture.nativeElement as HTMLElement).querySelector(
-      'deltafil-sidebar',
+      'dc-sidebar',
     ) as HTMLElement;
     const rail = sidebar.firstElementChild as HTMLElement;
+    const paint = 'bg-[var(--dc-color,var(--color-surface-200))]';
 
-    expect(rail.classList.contains('bg-container-panel')).toBe(true);
+    expect(sidebar.classList.contains(paint)).toBe(true);
+    expect(sidebar.style.getPropertyValue('--dc-color')).toBe('var(--color-surface-200)');
     expect(rail.classList.contains('border-container-subtle')).toBe(true);
-    expect(rail.classList.contains('text-secondary-800')).toBe(true);
-    expect(rail.classList.contains('p-container-padding-sm')).toBe(true);
 
     host.activeId.set('playground');
-    host.background.set('primary');
+    host.color.set('primary-700');
     host.border.set('strong');
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expect(rail.classList.contains('bg-container-primary')).toBe(true);
-    expect(rail.classList.contains('text-secondary-50')).toBe(true);
+    expect(sidebar.style.getPropertyValue('--dc-color')).toBe('var(--color-primary-700)');
+    expect(sidebar.style.getPropertyValue('--dc-color-foreground')).toBe(
+      'var(--color-primary-700-foreground)',
+    );
     expect(rail.classList.contains('border-container-strong')).toBe(true);
+    expect(buttonByLabel(fixture, 'Playground')?.classList.contains('bg-current/15')).toBe(true);
+    expect(buttonByLabel(fixture, 'Docs')?.classList.contains('hover:bg-current/10')).toBe(true);
 
-    const active = buttonByLabel(fixture, 'Playground');
-    expect(active?.classList.contains('bg-primary-700')).toBe(true);
-    expect(active?.classList.contains('text-secondary-50')).toBe(true);
-    expect(active?.classList.contains('hover:bg-primary-600')).toBe(true);
-
-    host.background.set('soft');
+    // Unset falls back to surface-200 through the CSS var() fallback.
+    host.color.set(undefined);
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expect(rail.classList.contains('bg-container-soft')).toBe(true);
-    expect(rail.classList.contains('text-secondary-800')).toBe(true);
-    expect(active?.classList.contains('bg-container-panel')).toBe(true);
-    expect(active?.classList.contains('hover:bg-container-panel')).toBe(true);
+    expect(sidebar.style.getPropertyValue('--dc-color')).toBe('');
+    expect(sidebar.classList.contains(paint)).toBe(true);
+  });
+
+  it('makes rows clickable with a ripple', async () => {
+    const { fixture } = await setup();
+    const docs = buttonByLabel(fixture, 'Docs');
+    expect(docs?.classList.contains('dc-ripple')).toBe(true);
+    expect(docs?.classList.contains('cursor-pointer')).toBe(true);
   });
 });

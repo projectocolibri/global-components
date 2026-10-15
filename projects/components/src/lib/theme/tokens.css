@@ -1,0 +1,376 @@
+/*
+ * Design tokens (Deltafil company defaults). Every value lives here, prefixed --dc-.
+ *
+ *   --dc-light-color-<palette>-<50…950>   palettes for light mode
+ *   --dc-light-color-<palette>-<step>-foreground   text color on that step
+ *   --dc-light-color-<name>               defaults (background, primary…): one step + its foreground
+ *   --dc-dark-color-…                     the same set for dark mode
+ *   --dc-font-*                           typography
+ *
+ * Palettes follow Tailwind convention (50 lighter → 950 darker in light mode);
+ * the dark palettes are inverted so each step keeps its contrast on dark surfaces.
+ * theme.css maps these onto Tailwind variables. Override any of them on :root.
+ */
+
+/* -------------------------------------------------------------------------- */
+/* Light                                                                      */
+/* -------------------------------------------------------------------------- */
+:root {
+  /* Primary — brand */
+  --dc-light-color-primary-50: oklch(0.98 0.015 50);
+  --dc-light-color-primary-100: oklch(0.955 0.03 49);
+  --dc-light-color-primary-200: oklch(0.91 0.05 48.5);
+  --dc-light-color-primary-300: oklch(0.85 0.075 47.8);
+  --dc-light-color-primary-400: oklch(0.7823 0.0971 47.1);
+  --dc-light-color-primary-500: oklch(0.704 0.1367 46.23);
+  --dc-light-color-primary-600: oklch(0.6094 0.1163 46.8);
+  --dc-light-color-primary-700: oklch(0.52 0.1 46.5);
+  --dc-light-color-primary-800: oklch(0.43 0.08 46.2);
+  --dc-light-color-primary-900: oklch(0.37 0.065 46);
+  --dc-light-color-primary-950: oklch(0.27 0.04 45.5);
+
+  /* Secondary — neutrals / ink */
+  --dc-light-color-secondary-50: oklch(0.985 0 0);
+  --dc-light-color-secondary-100: oklch(0.94 0 0);
+  --dc-light-color-secondary-200: oklch(0.86 0 0);
+  --dc-light-color-secondary-300: oklch(0.74 0 0);
+  --dc-light-color-secondary-400: oklch(0.62 0 0);
+  --dc-light-color-secondary-500: oklch(0.5 0 0);
+  --dc-light-color-secondary-600: oklch(0.4 0 0);
+  --dc-light-color-secondary-700: oklch(0.32 0 0);
+  --dc-light-color-secondary-800: oklch(0.24 0 0);
+  --dc-light-color-secondary-900: oklch(0.17 0 0);
+  --dc-light-color-secondary-950: oklch(0.11 0 0);
+
+  /* Surface — page and panel backgrounds */
+  --dc-light-color-surface-50: oklch(0.995 0 0);
+  --dc-light-color-surface-100: oklch(0.985 0 0);
+  --dc-light-color-surface-200: oklch(0.97 0 0);
+  --dc-light-color-surface-300: oklch(0.955 0 0);
+  --dc-light-color-surface-400: oklch(0.94 0 0);
+  --dc-light-color-surface-500: oklch(0.92 0 0);
+  --dc-light-color-surface-600: oklch(0.88 0 0);
+  --dc-light-color-surface-700: oklch(0.82 0 0);
+  --dc-light-color-surface-800: oklch(0.74 0 0);
+  --dc-light-color-surface-900: oklch(0.64 0 0);
+  --dc-light-color-surface-950: oklch(0.54 0 0);
+
+  /* Error */
+  --dc-light-color-error-50: oklch(0.971 0.013 27.7);
+  --dc-light-color-error-100: oklch(0.936 0.032 27.7);
+  --dc-light-color-error-200: oklch(0.885 0.062 27.7);
+  --dc-light-color-error-300: oklch(0.808 0.105 27.7);
+  --dc-light-color-error-400: oklch(0.704 0.152 27.7);
+  --dc-light-color-error-500: oklch(0.51 0.19 27.7);
+  --dc-light-color-error-600: oklch(0.444 0.177 27.7);
+  --dc-light-color-error-700: oklch(0.373 0.152 27.7);
+  --dc-light-color-error-800: oklch(0.311 0.124 27.7);
+  --dc-light-color-error-900: oklch(0.258 0.095 27.7);
+  --dc-light-color-error-950: oklch(0.178 0.057 27.7);
+
+  /* Warning */
+  --dc-light-color-warning-50: oklch(0.987 0.026 97.41);
+  --dc-light-color-warning-100: oklch(0.973 0.052 97.41);
+  --dc-light-color-warning-200: oklch(0.945 0.095 97.41);
+  --dc-light-color-warning-300: oklch(0.905 0.142 97.41);
+  --dc-light-color-warning-400: oklch(0.872 0.171 97.41);
+  --dc-light-color-warning-500: oklch(0.84 0.19 97.41);
+  --dc-light-color-warning-600: oklch(0.746 0.171 97.41);
+  --dc-light-color-warning-700: oklch(0.632 0.152 97.41);
+  --dc-light-color-warning-800: oklch(0.528 0.124 97.41);
+  --dc-light-color-warning-900: oklch(0.441 0.095 97.41);
+  --dc-light-color-warning-950: oklch(0.302 0.057 97.41);
+
+  /* Success */
+  --dc-light-color-success-50: oklch(0.972 0.017 154.55);
+  --dc-light-color-success-100: oklch(0.942 0.036 154.55);
+  --dc-light-color-success-200: oklch(0.891 0.065 154.55);
+  --dc-light-color-success-300: oklch(0.821 0.094 154.55);
+  --dc-light-color-success-400: oklch(0.722 0.124 154.55);
+  --dc-light-color-success-500: oklch(0.5823 0.1453 154.55);
+  --dc-light-color-success-600: oklch(0.508 0.131 154.55);
+  --dc-light-color-success-700: oklch(0.436 0.11 154.55);
+  --dc-light-color-success-800: oklch(0.368 0.087 154.55);
+  --dc-light-color-success-900: oklch(0.312 0.07 154.55);
+  --dc-light-color-success-950: oklch(0.218 0.044 154.55);
+
+  /* Palette foregrounds — text on each step (seeded by lightness; tune per brand) */
+  --dc-light-color-primary-50-foreground: var(--dc-light-color-primary-950);
+  --dc-light-color-primary-100-foreground: var(--dc-light-color-primary-950);
+  --dc-light-color-primary-200-foreground: var(--dc-light-color-primary-950);
+  --dc-light-color-primary-300-foreground: var(--dc-light-color-primary-950);
+  --dc-light-color-primary-400-foreground: var(--dc-light-color-primary-950);
+  --dc-light-color-primary-500-foreground: var(--dc-light-color-primary-950);
+  --dc-light-color-primary-600-foreground: var(--dc-light-color-primary-50);
+  --dc-light-color-primary-700-foreground: var(--dc-light-color-primary-50);
+  --dc-light-color-primary-800-foreground: var(--dc-light-color-primary-50);
+  --dc-light-color-primary-900-foreground: var(--dc-light-color-primary-50);
+  --dc-light-color-primary-950-foreground: var(--dc-light-color-primary-50);
+
+  --dc-light-color-secondary-50-foreground: var(--dc-light-color-secondary-950);
+  --dc-light-color-secondary-100-foreground: var(--dc-light-color-secondary-950);
+  --dc-light-color-secondary-200-foreground: var(--dc-light-color-secondary-950);
+  --dc-light-color-secondary-300-foreground: var(--dc-light-color-secondary-950);
+  --dc-light-color-secondary-400-foreground: var(--dc-light-color-secondary-950);
+  --dc-light-color-secondary-500-foreground: var(--dc-light-color-secondary-50);
+  --dc-light-color-secondary-600-foreground: var(--dc-light-color-secondary-50);
+  --dc-light-color-secondary-700-foreground: var(--dc-light-color-secondary-50);
+  --dc-light-color-secondary-800-foreground: var(--dc-light-color-secondary-50);
+  --dc-light-color-secondary-900-foreground: var(--dc-light-color-secondary-50);
+  --dc-light-color-secondary-950-foreground: var(--dc-light-color-secondary-50);
+
+  --dc-light-color-surface-50-foreground: var(--dc-light-color-secondary-950);
+  --dc-light-color-surface-100-foreground: var(--dc-light-color-secondary-950);
+  --dc-light-color-surface-200-foreground: var(--dc-light-color-secondary-950);
+  --dc-light-color-surface-300-foreground: var(--dc-light-color-secondary-950);
+  --dc-light-color-surface-400-foreground: var(--dc-light-color-secondary-950);
+  --dc-light-color-surface-500-foreground: var(--dc-light-color-secondary-950);
+  --dc-light-color-surface-600-foreground: var(--dc-light-color-secondary-950);
+  --dc-light-color-surface-700-foreground: var(--dc-light-color-secondary-950);
+  --dc-light-color-surface-800-foreground: var(--dc-light-color-secondary-950);
+  --dc-light-color-surface-900-foreground: var(--dc-light-color-secondary-950);
+  --dc-light-color-surface-950-foreground: var(--dc-light-color-secondary-50);
+
+  --dc-light-color-error-50-foreground: var(--dc-light-color-error-950);
+  --dc-light-color-error-100-foreground: var(--dc-light-color-error-950);
+  --dc-light-color-error-200-foreground: var(--dc-light-color-error-950);
+  --dc-light-color-error-300-foreground: var(--dc-light-color-error-950);
+  --dc-light-color-error-400-foreground: var(--dc-light-color-error-950);
+  --dc-light-color-error-500-foreground: var(--dc-light-color-error-50);
+  --dc-light-color-error-600-foreground: var(--dc-light-color-error-50);
+  --dc-light-color-error-700-foreground: var(--dc-light-color-error-50);
+  --dc-light-color-error-800-foreground: var(--dc-light-color-error-50);
+  --dc-light-color-error-900-foreground: var(--dc-light-color-error-50);
+  --dc-light-color-error-950-foreground: var(--dc-light-color-error-50);
+
+  --dc-light-color-warning-50-foreground: var(--dc-light-color-warning-950);
+  --dc-light-color-warning-100-foreground: var(--dc-light-color-warning-950);
+  --dc-light-color-warning-200-foreground: var(--dc-light-color-warning-950);
+  --dc-light-color-warning-300-foreground: var(--dc-light-color-warning-950);
+  --dc-light-color-warning-400-foreground: var(--dc-light-color-warning-950);
+  --dc-light-color-warning-500-foreground: var(--dc-light-color-warning-950);
+  --dc-light-color-warning-600-foreground: var(--dc-light-color-warning-950);
+  --dc-light-color-warning-700-foreground: var(--dc-light-color-warning-950);
+  --dc-light-color-warning-800-foreground: var(--dc-light-color-warning-50);
+  --dc-light-color-warning-900-foreground: var(--dc-light-color-warning-50);
+  --dc-light-color-warning-950-foreground: var(--dc-light-color-warning-50);
+
+  --dc-light-color-success-50-foreground: var(--dc-light-color-success-950);
+  --dc-light-color-success-100-foreground: var(--dc-light-color-success-950);
+  --dc-light-color-success-200-foreground: var(--dc-light-color-success-950);
+  --dc-light-color-success-300-foreground: var(--dc-light-color-success-950);
+  --dc-light-color-success-400-foreground: var(--dc-light-color-success-950);
+  --dc-light-color-success-500-foreground: var(--dc-light-color-success-50);
+  --dc-light-color-success-600-foreground: var(--dc-light-color-success-50);
+  --dc-light-color-success-700-foreground: var(--dc-light-color-success-50);
+  --dc-light-color-success-800-foreground: var(--dc-light-color-success-50);
+  --dc-light-color-success-900-foreground: var(--dc-light-color-success-50);
+  --dc-light-color-success-950-foreground: var(--dc-light-color-success-50);
+
+  /* Defaults — each points at one palette step and uses that step's foreground */
+  --dc-light-color-background: var(--dc-light-color-surface-50);
+  --dc-light-color-background-foreground: var(--dc-light-color-surface-50-foreground);
+  --dc-light-color-primary: var(--dc-light-color-primary-500);
+  --dc-light-color-primary-foreground: var(--dc-light-color-primary-500-foreground);
+  --dc-light-color-secondary: var(--dc-light-color-secondary-600);
+  --dc-light-color-secondary-foreground: var(--dc-light-color-secondary-600-foreground);
+  --dc-light-color-error: var(--dc-light-color-error-500);
+  --dc-light-color-error-foreground: var(--dc-light-color-error-500-foreground);
+  --dc-light-color-warning: var(--dc-light-color-warning-600);
+  --dc-light-color-warning-foreground: var(--dc-light-color-warning-600-foreground);
+  --dc-light-color-success: var(--dc-light-color-success-600);
+  --dc-light-color-success-foreground: var(--dc-light-color-success-600-foreground);
+
+  /* Page text — same as the text on the background */
+  --dc-light-color-foreground: var(--dc-light-color-background-foreground);
+
+  /* Lines */
+  --dc-light-color-border: var(--dc-light-color-secondary-200);
+  --dc-light-color-border-strong: var(--dc-light-color-secondary-400);
+  --dc-light-color-ring: var(--dc-light-color-primary-500);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Dark                                                                       */
+/* -------------------------------------------------------------------------- */
+:root {
+  /* Primary — brand */
+  --dc-dark-color-primary-50: oklch(0.27 0.04 45.5);
+  --dc-dark-color-primary-100: oklch(0.37 0.065 46);
+  --dc-dark-color-primary-200: oklch(0.43 0.08 46.2);
+  --dc-dark-color-primary-300: oklch(0.52 0.1 46.5);
+  --dc-dark-color-primary-400: oklch(0.6094 0.1163 46.8);
+  --dc-dark-color-primary-500: oklch(0.704 0.1367 46.23);
+  --dc-dark-color-primary-600: oklch(0.7823 0.0971 47.1);
+  --dc-dark-color-primary-700: oklch(0.85 0.075 47.8);
+  --dc-dark-color-primary-800: oklch(0.91 0.05 48.5);
+  --dc-dark-color-primary-900: oklch(0.955 0.03 49);
+  --dc-dark-color-primary-950: oklch(0.98 0.015 50);
+
+  /* Secondary — neutrals / ink */
+  --dc-dark-color-secondary-50: oklch(0.11 0 0);
+  --dc-dark-color-secondary-100: oklch(0.17 0 0);
+  --dc-dark-color-secondary-200: oklch(0.24 0 0);
+  --dc-dark-color-secondary-300: oklch(0.32 0 0);
+  --dc-dark-color-secondary-400: oklch(0.4 0 0);
+  --dc-dark-color-secondary-500: oklch(0.5 0 0);
+  --dc-dark-color-secondary-600: oklch(0.62 0 0);
+  --dc-dark-color-secondary-700: oklch(0.74 0 0);
+  --dc-dark-color-secondary-800: oklch(0.86 0 0);
+  --dc-dark-color-secondary-900: oklch(0.94 0 0);
+  --dc-dark-color-secondary-950: oklch(0.985 0 0);
+
+  /* Surface — page and panel backgrounds */
+  --dc-dark-color-surface-50: oklch(0.14 0 0);
+  --dc-dark-color-surface-100: oklch(0.18 0 0);
+  --dc-dark-color-surface-200: oklch(0.22 0 0);
+  --dc-dark-color-surface-300: oklch(0.26 0 0);
+  --dc-dark-color-surface-400: oklch(0.3 0 0);
+  --dc-dark-color-surface-500: oklch(0.35 0 0);
+  --dc-dark-color-surface-600: oklch(0.42 0 0);
+  --dc-dark-color-surface-700: oklch(0.5 0 0);
+  --dc-dark-color-surface-800: oklch(0.6 0 0);
+  --dc-dark-color-surface-900: oklch(0.72 0 0);
+  --dc-dark-color-surface-950: oklch(0.86 0 0);
+
+  /* Error */
+  --dc-dark-color-error-50: oklch(0.178 0.057 27.7);
+  --dc-dark-color-error-100: oklch(0.258 0.095 27.7);
+  --dc-dark-color-error-200: oklch(0.311 0.124 27.7);
+  --dc-dark-color-error-300: oklch(0.373 0.152 27.7);
+  --dc-dark-color-error-400: oklch(0.444 0.177 27.7);
+  --dc-dark-color-error-500: oklch(0.58 0.19 27.7);
+  --dc-dark-color-error-600: oklch(0.704 0.152 27.7);
+  --dc-dark-color-error-700: oklch(0.808 0.105 27.7);
+  --dc-dark-color-error-800: oklch(0.885 0.062 27.7);
+  --dc-dark-color-error-900: oklch(0.936 0.032 27.7);
+  --dc-dark-color-error-950: oklch(0.971 0.013 27.7);
+
+  /* Warning */
+  --dc-dark-color-warning-50: oklch(0.302 0.057 97.41);
+  --dc-dark-color-warning-100: oklch(0.441 0.095 97.41);
+  --dc-dark-color-warning-200: oklch(0.528 0.124 97.41);
+  --dc-dark-color-warning-300: oklch(0.632 0.152 97.41);
+  --dc-dark-color-warning-400: oklch(0.746 0.171 97.41);
+  --dc-dark-color-warning-500: oklch(0.84 0.19 97.41);
+  --dc-dark-color-warning-600: oklch(0.872 0.171 97.41);
+  --dc-dark-color-warning-700: oklch(0.905 0.142 97.41);
+  --dc-dark-color-warning-800: oklch(0.945 0.095 97.41);
+  --dc-dark-color-warning-900: oklch(0.973 0.052 97.41);
+  --dc-dark-color-warning-950: oklch(0.987 0.026 97.41);
+
+  /* Success */
+  --dc-dark-color-success-50: oklch(0.218 0.044 154.55);
+  --dc-dark-color-success-100: oklch(0.312 0.07 154.55);
+  --dc-dark-color-success-200: oklch(0.368 0.087 154.55);
+  --dc-dark-color-success-300: oklch(0.436 0.11 154.55);
+  --dc-dark-color-success-400: oklch(0.508 0.131 154.55);
+  --dc-dark-color-success-500: oklch(0.65 0.1453 154.55);
+  --dc-dark-color-success-600: oklch(0.722 0.124 154.55);
+  --dc-dark-color-success-700: oklch(0.821 0.094 154.55);
+  --dc-dark-color-success-800: oklch(0.891 0.065 154.55);
+  --dc-dark-color-success-900: oklch(0.942 0.036 154.55);
+  --dc-dark-color-success-950: oklch(0.972 0.017 154.55);
+
+  /* Palette foregrounds — text on each step (seeded by lightness; tune per brand) */
+  --dc-dark-color-primary-50-foreground: var(--dc-dark-color-primary-950);
+  --dc-dark-color-primary-100-foreground: var(--dc-dark-color-primary-950);
+  --dc-dark-color-primary-200-foreground: var(--dc-dark-color-primary-950);
+  --dc-dark-color-primary-300-foreground: var(--dc-dark-color-primary-950);
+  --dc-dark-color-primary-400-foreground: var(--dc-dark-color-primary-950);
+  --dc-dark-color-primary-500-foreground: var(--dc-dark-color-primary-50);
+  --dc-dark-color-primary-600-foreground: var(--dc-dark-color-primary-50);
+  --dc-dark-color-primary-700-foreground: var(--dc-dark-color-primary-50);
+  --dc-dark-color-primary-800-foreground: var(--dc-dark-color-primary-50);
+  --dc-dark-color-primary-900-foreground: var(--dc-dark-color-primary-50);
+  --dc-dark-color-primary-950-foreground: var(--dc-dark-color-primary-50);
+
+  --dc-dark-color-secondary-50-foreground: var(--dc-dark-color-secondary-950);
+  --dc-dark-color-secondary-100-foreground: var(--dc-dark-color-secondary-950);
+  --dc-dark-color-secondary-200-foreground: var(--dc-dark-color-secondary-950);
+  --dc-dark-color-secondary-300-foreground: var(--dc-dark-color-secondary-950);
+  --dc-dark-color-secondary-400-foreground: var(--dc-dark-color-secondary-950);
+  --dc-dark-color-secondary-500-foreground: var(--dc-dark-color-secondary-950);
+  --dc-dark-color-secondary-600-foreground: var(--dc-dark-color-secondary-50);
+  --dc-dark-color-secondary-700-foreground: var(--dc-dark-color-secondary-50);
+  --dc-dark-color-secondary-800-foreground: var(--dc-dark-color-secondary-50);
+  --dc-dark-color-secondary-900-foreground: var(--dc-dark-color-secondary-50);
+  --dc-dark-color-secondary-950-foreground: var(--dc-dark-color-secondary-50);
+
+  --dc-dark-color-surface-50-foreground: var(--dc-dark-color-secondary-950);
+  --dc-dark-color-surface-100-foreground: var(--dc-dark-color-secondary-950);
+  --dc-dark-color-surface-200-foreground: var(--dc-dark-color-secondary-950);
+  --dc-dark-color-surface-300-foreground: var(--dc-dark-color-secondary-950);
+  --dc-dark-color-surface-400-foreground: var(--dc-dark-color-secondary-950);
+  --dc-dark-color-surface-500-foreground: var(--dc-dark-color-secondary-950);
+  --dc-dark-color-surface-600-foreground: var(--dc-dark-color-secondary-950);
+  --dc-dark-color-surface-700-foreground: var(--dc-dark-color-secondary-950);
+  --dc-dark-color-surface-800-foreground: var(--dc-dark-color-secondary-950);
+  --dc-dark-color-surface-900-foreground: var(--dc-dark-color-secondary-50);
+  --dc-dark-color-surface-950-foreground: var(--dc-dark-color-secondary-50);
+
+  --dc-dark-color-error-50-foreground: var(--dc-dark-color-error-950);
+  --dc-dark-color-error-100-foreground: var(--dc-dark-color-error-950);
+  --dc-dark-color-error-200-foreground: var(--dc-dark-color-error-950);
+  --dc-dark-color-error-300-foreground: var(--dc-dark-color-error-950);
+  --dc-dark-color-error-400-foreground: var(--dc-dark-color-error-950);
+  --dc-dark-color-error-500-foreground: var(--dc-dark-color-error-950);
+  --dc-dark-color-error-600-foreground: var(--dc-dark-color-error-50);
+  --dc-dark-color-error-700-foreground: var(--dc-dark-color-error-50);
+  --dc-dark-color-error-800-foreground: var(--dc-dark-color-error-50);
+  --dc-dark-color-error-900-foreground: var(--dc-dark-color-error-50);
+  --dc-dark-color-error-950-foreground: var(--dc-dark-color-error-50);
+
+  --dc-dark-color-warning-50-foreground: var(--dc-dark-color-warning-950);
+  --dc-dark-color-warning-100-foreground: var(--dc-dark-color-warning-950);
+  --dc-dark-color-warning-200-foreground: var(--dc-dark-color-warning-950);
+  --dc-dark-color-warning-300-foreground: var(--dc-dark-color-warning-50);
+  --dc-dark-color-warning-400-foreground: var(--dc-dark-color-warning-50);
+  --dc-dark-color-warning-500-foreground: var(--dc-dark-color-warning-50);
+  --dc-dark-color-warning-600-foreground: var(--dc-dark-color-warning-50);
+  --dc-dark-color-warning-700-foreground: var(--dc-dark-color-warning-50);
+  --dc-dark-color-warning-800-foreground: var(--dc-dark-color-warning-50);
+  --dc-dark-color-warning-900-foreground: var(--dc-dark-color-warning-50);
+  --dc-dark-color-warning-950-foreground: var(--dc-dark-color-warning-50);
+
+  --dc-dark-color-success-50-foreground: var(--dc-dark-color-success-950);
+  --dc-dark-color-success-100-foreground: var(--dc-dark-color-success-950);
+  --dc-dark-color-success-200-foreground: var(--dc-dark-color-success-950);
+  --dc-dark-color-success-300-foreground: var(--dc-dark-color-success-950);
+  --dc-dark-color-success-400-foreground: var(--dc-dark-color-success-950);
+  --dc-dark-color-success-500-foreground: var(--dc-dark-color-success-50);
+  --dc-dark-color-success-600-foreground: var(--dc-dark-color-success-50);
+  --dc-dark-color-success-700-foreground: var(--dc-dark-color-success-50);
+  --dc-dark-color-success-800-foreground: var(--dc-dark-color-success-50);
+  --dc-dark-color-success-900-foreground: var(--dc-dark-color-success-50);
+  --dc-dark-color-success-950-foreground: var(--dc-dark-color-success-50);
+
+  /* Defaults — each points at one palette step and uses that step's foreground */
+  --dc-dark-color-background: var(--dc-dark-color-surface-50);
+  --dc-dark-color-background-foreground: var(--dc-dark-color-surface-50-foreground);
+  --dc-dark-color-primary: var(--dc-dark-color-primary-700);
+  --dc-dark-color-primary-foreground: var(--dc-dark-color-primary-700-foreground);
+  --dc-dark-color-secondary: var(--dc-dark-color-secondary-700);
+  --dc-dark-color-secondary-foreground: var(--dc-dark-color-secondary-700-foreground);
+  --dc-dark-color-error: var(--dc-dark-color-error-700);
+  --dc-dark-color-error-foreground: var(--dc-dark-color-error-700-foreground);
+  --dc-dark-color-warning: var(--dc-dark-color-warning-700);
+  --dc-dark-color-warning-foreground: var(--dc-dark-color-warning-700-foreground);
+  --dc-dark-color-success: var(--dc-dark-color-success-700);
+  --dc-dark-color-success-foreground: var(--dc-dark-color-success-700-foreground);
+
+  /* Page text — same as the text on the background */
+  --dc-dark-color-foreground: var(--dc-dark-color-background-foreground);
+
+  /* Lines */
+  --dc-dark-color-border: var(--dc-dark-color-secondary-300);
+  --dc-dark-color-border-strong: var(--dc-dark-color-secondary-500);
+  --dc-dark-color-ring: var(--dc-dark-color-primary-700);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Typography                                                                 */
+/* -------------------------------------------------------------------------- */
+:root {
+  --dc-font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}

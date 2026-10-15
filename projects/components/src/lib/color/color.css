@@ -1,0 +1,17 @@
+/*
+ * Color — the variables set by the dc-color directive.
+ *
+ * Registered as non-inheriting, so each element only sees its own color:
+ * a button inside a colored container keeps its default instead of picking up
+ * the container's --dc-color. Unset values stay invalid, so var() fallbacks apply.
+ */
+
+@property --dc-color {
+  syntax: '*';
+  inherits: false;
+}
+
+@property --dc-color-foreground {
+  syntax: '*';
+  inherits: false;
+}

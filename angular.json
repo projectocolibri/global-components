@@ -10,7 +10,7 @@
       "projectType": "library",
       "root": "projects/components",
       "sourceRoot": "projects/components/src",
-      "prefix": "lib",
+      "prefix": "dc",
       "architect": {
         "build": {
           "builder": "@angular/build:ng-packagr",

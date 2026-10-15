@@ -1,25 +1,24 @@
 <div
-  deltafilContainer
+  dc-container
   direction="horizontal"
   width="screen"
   height="screen"
   align="stretch"
-  background="canvas"
+  color="background"
 >
-  <deltafil-sidebar
+  <dc-sidebar
     [items]="navItems"
     [collapsed]="sidebarCollapsed()"
     [expansion]="sidebarExpansion()"
     [activeId]="activeId()"
-    background="canvas"
+    color="background"
     border="subtle"
     (select)="onSidebarSelect($event)"
   >
-    <div sidebarLogo class="flex items-center gap-container-sm">
+    <div dc-sidebar-logo class="flex items-center gap-container-sm">
       <button
-        deltafilButton
+        dc-icon-button
         type="button"
-        appearance="icon"
         aria-label="Hide sidebar"
         (click)="toggleSidebarCollapsed()"
       >
@@ -45,13 +44,12 @@
       </a>
     </div>
 
-    <div sidebarActions class="flex flex-row flex-wrap items-center gap-container-sm">
+    <div dc-sidebar-actions class="flex flex-row flex-wrap items-center gap-container-sm">
       <button
-        deltafilButton
+        dc-icon-button
         type="button"
-        appearance="icon"
         aria-label="Inline expansion"
-        [attr.aria-pressed]="sidebarExpansion() === 'inline'"
+        [selected]="sidebarExpansion() === 'inline'"
         (click)="setSidebarExpansion('inline')"
       >
         <svg
@@ -67,12 +65,10 @@
         </svg>
       </button>
       <button
-        deltafilButton
+        dc-icon-button
         type="button"
-        appearance="icon"
-        variant="primary"
         aria-label="Adjacent expansion"
-        [attr.aria-pressed]="sidebarExpansion() === 'adjacent'"
+        [selected]="sidebarExpansion() === 'adjacent'"
         (click)="setSidebarExpansion('adjacent')"
       >
         <svg
@@ -89,9 +85,8 @@
         </svg>
       </button>
       <button
-        deltafilButton
+        dc-icon-button
         type="button"
-        appearance="icon"
         [attr.aria-label]="isDark() ? 'Switch to light mode' : 'Switch to dark mode'"
         (click)="toggleDarkMode()"
       >
@@ -125,11 +120,10 @@
         }
       </button>
       <button
-        deltafilButton
+        dc-icon-button
         type="button"
-        appearance="icon"
         aria-label="Use computer color scheme"
-        [attr.aria-pressed]="themePreference() === 'system' ? 'true' : 'false'"
+        [selected]="themePreference() === 'system'"
         (click)="useSystemTheme()"
       >
         <svg
@@ -147,13 +141,13 @@
       </button>
     </div>
 
-    <ng-template deltafilSidebarItem let-item>
+    <ng-template dc-sidebar-item let-item>
       <span class="min-w-0 whitespace-normal break-words">{{ item.label }}</span>
     </ng-template>
-  </deltafil-sidebar>
+  </dc-sidebar>
 
   <main
-    deltafilContainer
+    dc-container
     grow
     direction="vertical"
     justify="start"
@@ -162,10 +156,10 @@
     padding="md"
     height="full"
     overflow="scroll"
-    background="canvas"
+    color="background"
   >
   <div 
-    deltafilContainer
+    dc-container
     direction="horizontal"
     justify="start"
     align="stretch"
@@ -173,13 +167,12 @@
     padding="md"
     height="auto"
     overflow="scroll"
-    background="canvas"
+    color="background"
   >
       @if (sidebarCollapsed()) {
         <button
-          deltafilButton
+          dc-icon-button
           type="button"
-          appearance="icon"
           aria-label="Show sidebar"
           (click)="toggleSidebarCollapsed()"
         >
@@ -198,7 +191,7 @@
         </button>
       }
   </div>
-    <h1 class="font-sans text-3xl font-bold text-secondary-900">&#64;deltafil/components</h1>
+    <h1 class="font-sans text-4xl font-semibold text-foreground">&#64;deltafil/components</h1>
 
     @if (page() === 'overview') {
       <p class="font-sans text-sm text-secondary-600">All components</p>
@@ -206,202 +199,253 @@
 
     @if (page() === 'overview' || page() === 'button') {
       <section
-        deltafilContainer
+        dc-container
         direction="vertical"
         gap="md"
         padding="md"
         width="full"
-        background="panel"
+        color="surface-200"
         rounded="md"
       >
-        <h2 class="font-sans text-xl font-bold text-secondary-900">Button</h2>
-        <div deltafilContainer direction="horizontal" gap="sm" wrap align="center" width="full">
-          <button deltafilButton type="button" appearance="text" rounded="full">Text</button>
-          <button deltafilButton type="button" appearance="elevated" rounded="full">Elevated</button>
-          <button deltafilButton type="button" appearance="outlined" rounded="full">Outlined</button>
-          <button deltafilButton type="button" appearance="filled" rounded="full">Filled</button>
-          <button deltafilButton type="button" appearance="tonal" rounded="full">Tonal</button>
-          <button deltafilButton type="button" appearance="text" rounded="full" disabled>
-            Disabled
-          </button>
-          <button deltafilButton type="button" appearance="filled" variant="primary" rounded="full">
-            Primary
-          </button>
-          <button
-            deltafilButton
-            type="button"
-            appearance="filled"
-            variant="secondary"
-            rounded="full"
+        <h2 class="font-sans text-xl font-semibold text-foreground">Button</h2>
+        <div class="overflow-x-auto">
+          <div
+            class="grid w-max grid-cols-[auto_repeat(9,max-content)] items-center justify-items-center gap-x-4 gap-y-3"
           >
-            Secondary
-          </button>
-          <button deltafilButton type="button" appearance="filled" variant="error" rounded="full">
-            Error
-          </button>
-          <button deltafilButton type="button" appearance="icon" rounded="full" aria-label="More">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              class="size-5"
-              aria-hidden="true"
-            >
-              <circle cx="12" cy="5" r="1.5" />
-              <circle cx="12" cy="12" r="1.5" />
-              <circle cx="12" cy="19" r="1.5" />
-            </svg>
-          </button>
-          <button deltafilButton type="button" appearance="fab" rounded="lg" aria-label="Delete">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              class="size-6"
-              aria-hidden="true"
-            >
-              <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" />
-            </svg>
-          </button>
-          <button deltafilButton type="button" appearance="mini-fab" rounded="lg" aria-label="Menu">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              class="size-5"
-              aria-hidden="true"
-            >
-              <path d="M4 7h16M4 12h16M4 17h16" />
-            </svg>
-          </button>
-          <button deltafilButton type="button" appearance="extended-fab" rounded="full">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              class="size-5"
-              aria-hidden="true"
-            >
-              <path
-                d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10z"
-              />
-            </svg>
-            Extended
-          </button>
+            <span></span>
+            @for (style of buttonStyles; track style) {
+              <span class="font-sans text-xs text-secondary-600">{{ style }}</span>
+            }
+
+            @for (row of buttonRows; track row.label) {
+              <span class="justify-self-start pr-2 font-sans text-sm font-semibold text-foreground">
+                {{ row.label }}
+              </span>
+              <button dc-button type="button" [color]="row.color" [disabled]="row.disabled">
+                Text
+              </button>
+              <button dc-elevated-button type="button" [color]="row.color" [disabled]="row.disabled">
+                Elevated
+              </button>
+              <button dc-outlined-button type="button" [color]="row.color" [disabled]="row.disabled">
+                Outlined
+              </button>
+              <button dc-filled-button type="button" [color]="row.color" [disabled]="row.disabled">
+                Filled
+              </button>
+              <button dc-tonal-button type="button" [color]="row.color" [disabled]="row.disabled">
+                Tonal
+              </button>
+              <button
+                dc-icon-button
+                type="button"
+                aria-label="More"
+                [color]="row.color"
+                [disabled]="row.disabled"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="size-5"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="5" r="1.5" />
+                  <circle cx="12" cy="12" r="1.5" />
+                  <circle cx="12" cy="19" r="1.5" />
+                </svg>
+              </button>
+              <button
+                dc-fab
+                type="button"
+                aria-label="Delete"
+                [color]="row.color"
+                [disabled]="row.disabled"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  class="size-6"
+                  aria-hidden="true"
+                >
+                  <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" />
+                </svg>
+              </button>
+              <button
+                dc-mini-fab
+                type="button"
+                aria-label="Menu"
+                [color]="row.color"
+                [disabled]="row.disabled"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  class="size-5"
+                  aria-hidden="true"
+                >
+                  <path d="M4 7h16M4 12h16M4 17h16" />
+                </svg>
+              </button>
+              <button dc-extended-fab type="button" [color]="row.color" [disabled]="row.disabled">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="size-5"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10z"
+                  />
+                </svg>
+                Extended
+              </button>
+            }
+          </div>
+        </div>
+
+        <div dc-container direction="horizontal" gap="sm" wrap align="center" width="full">
+          <button dc-filled-button type="button" class="rounded-md">Tailwind rounded-md</button>
+          <a class="dc-btn dc-btn-tonal" href="#">Class-only link</a>
         </div>
       </section>
     }
 
     @if (page() === 'overview' || page() === 'container') {
       <section
-        deltafilContainer
+        dc-container
         direction="vertical"
         gap="md"
         padding="md"
         width="full"
-        background="panel"
+        color="surface-200"
         rounded="md"
       >
-        <h2 class="font-sans text-xl font-bold text-secondary-900">Container</h2>
-        <div deltafilContainer direction="horizontal" gap="md" wrap width="full">
+        <h2 class="font-sans text-xl font-semibold text-foreground">Container</h2>
+        <div dc-container direction="horizontal" gap="md" wrap width="full">
           <div
-            deltafilContainer
+            dc-container
             direction="vertical"
             gap="sm"
             padding="md"
             width="quarter"
-            background="soft"
+            color="surface-100"
             border="subtle"
             rounded="md"
           >
-            <span class="font-sans text-sm font-bold text-secondary-800">Soft + subtle</span>
+            <span class="font-sans text-sm font-semibold text-foreground">Soft + subtle</span>
             <span class="font-sans text-xs text-secondary-600">padding md, rounded md</span>
           </div>
           <div
-            deltafilContainer
+            dc-container
             direction="vertical"
             gap="sm"
             padding="md"
             width="quarter"
-            background="panel"
+            color="surface-200"
             border="strong"
             rounded="lg"
           >
-            <span class="font-sans text-sm font-bold text-secondary-800">Panel + strong</span>
+            <span class="font-sans text-sm font-semibold text-foreground">Panel + strong</span>
             <span class="font-sans text-xs text-secondary-600">rounded lg</span>
           </div>
           <div
-            deltafilContainer
+            dc-container
             direction="vertical"
             gap="sm"
             padding="md"
             width="quarter"
-            background="primary"
+            color="primary"
             border="primary"
             rounded="sm"
           >
-            <span class="font-sans text-sm font-bold text-secondary-50">Primary</span>
-            <span class="font-sans text-xs text-secondary-100">border primary</span>
+            <span class="font-sans text-sm font-semibold">Primary</span>
+            <span class="font-sans text-xs">text from primary-foreground</span>
           </div>
           <div
-            deltafilContainer
+            dc-container
             direction="horizontal"
             justify="between"
             align="center"
             gap="sm"
             padding="sm"
             width="quarter"
-            background="canvas"
+            color="background"
             border="subtle"
             rounded="lg"
           >
-            <span class="font-sans text-xs text-secondary-700">Between</span>
-            <span class="font-sans text-xs text-secondary-700">row</span>
+            <span class="font-sans text-xs text-secondary-600">Between</span>
+            <span class="font-sans text-xs text-secondary-600">row</span>
+          </div>
+          <div
+            dc-container
+            gap="sm"
+            padding="md"
+            width="quarter"
+            color="success-100"
+            rounded="md"
+          >
+            <span class="font-sans text-sm font-semibold">success-100</span>
+            <span class="font-sans text-xs">any palette step</span>
+          </div>
+          <div
+            dc-container
+            gap="sm"
+            padding="md"
+            width="quarter"
+            color="secondary-800"
+            rounded="md"
+          >
+            <span class="font-sans text-sm font-semibold">secondary-800</span>
+            <span class="font-sans text-xs">foreground picked by the token</span>
           </div>
         </div>
         <div
-          deltafilContainer
+          dc-container
           direction="horizontal"
           justify="around"
           align="center"
           gap="sm"
           padding="md"
           width="full"
-          background="soft"
+          color="surface-100"
           border="subtle"
           rounded="md"
         >
-          <span class="font-sans text-sm text-secondary-800">Around</span>
-          <span class="font-sans text-sm text-secondary-800">justify</span>
-          <span class="font-sans text-sm text-secondary-800">examples</span>
+          <span class="font-sans text-sm text-foreground">Around</span>
+          <span class="font-sans text-sm text-foreground">justify</span>
+          <span class="font-sans text-sm text-foreground">examples</span>
         </div>
       </section>
     }
 
     @if (page() === 'overview' || page() === 'sidebar') {
       <section
-        deltafilContainer
+        dc-container
         direction="vertical"
         gap="md"
         padding="md"
         width="full"
-        background="panel"
+        color="surface-200"
         rounded="md"
       >
-        <h2 class="font-sans text-xl font-bold text-secondary-900">Sidebar</h2>
+        <h2 class="font-sans text-xl font-semibold text-foreground">Sidebar</h2>
         <p class="font-sans text-sm text-secondary-600">
           Use the rail controls to collapse the sidebar, switch inline/adjacent expansion, and
           change theme. Surface uses container-like `background` and `border`; content tones
           follow `background`. Active item:
-          <span class="font-bold text-secondary-800">{{ activeId() ?? 'none' }}</span>
+          <span class="font-semibold text-foreground">{{ activeId() ?? 'none' }}</span>
         </p>
         <p class="font-sans text-sm text-secondary-600">
           Expansion mode:
-          <span class="font-bold text-secondary-800">{{ sidebarExpansion() }}</span>
+          <span class="font-semibold text-foreground">{{ sidebarExpansion() }}</span>
         </p>
       </section>
     }

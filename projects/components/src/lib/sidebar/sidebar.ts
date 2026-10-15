@@ -4,43 +4,19 @@ import {
   Component,
   computed,
   contentChild,
-  Directive,
   input,
   output,
   signal,
   TemplateRef,
 } from '@angular/core';
+import { DcClickable } from '../clickable';
+import { DcColor } from '../color';
+import { classNames, surfaceBorderColorClass, type SurfaceBorder } from '../core';
+import { DcRipple } from '../ripple';
+import { DcSidebarItem, type SidebarItem } from './sidebar-item';
 
 export type SidebarExpansion = 'inline' | 'adjacent';
-export type SidebarBackground = 'none' | 'canvas' | 'soft' | 'panel' | 'primary';
-export type SidebarBorder = 'none' | 'subtle' | 'strong' | 'primary';
-
-/**
- * One node in the sidebar tree. Presentation-only — no routes or app logic.
- */
-export interface SidebarItem {
-  id: string;
-  label: string;
-  children?: SidebarItem[];
-  disabled?: boolean;
-}
-
-/**
- * Marks an optional `ng-template` used to render each tree row.
- *
- * Context: `$implicit` is the {@link SidebarItem}.
- *
- * @example
- * ```html
- * <ng-template deltafilSidebarItem let-item>
- *   {{ item.label }}
- * </ng-template>
- * ```
- */
-@Directive({
-  selector: 'ng-template[deltafilSidebarItem]',
-})
-export class DeltafilSidebarItem {}
+export type SidebarBorder = SurfaceBorder;
 
 /**
  * Vertical navigation rail: logo, icon actions, and a tree.
@@ -49,31 +25,36 @@ export class DeltafilSidebarItem {}
  * `(select)`. Supports inline or adjacent child expansion. When `collapsed`,
  * the sidebar animates closed (width to zero).
  *
- * Surface is controlled with `background` and `border` (same token options as
- * container). Row and content tones follow `background` so labels stay visible.
+ * Surface is controlled with `color` (composed `dc-color`, default `'surface-200'`) and
+ * `border`. Text uses the color's `-foreground` pair; row hover and active tints
+ * are made from that text color, so they stay visible on any color. Rows are
+ * `dc-clickable` + `dc-ripple`.
  *
  * @example
  * ```html
- * <deltafil-sidebar
+ * <dc-sidebar
  *   [items]="nav"
  *   [activeId]="activeId()"
  *   expansion="inline"
- *   background="panel"
+ *   color="surface-200"
  *   border="subtle"
  *   (select)="activeId.set($event.id)"
  * >
- *   <a sidebarLogo href="/">Logo</a>
- *   <ng-container sidebarActions>
- *     <button deltafilButton type="button" appearance="icon" aria-label="Search">…</button>
- *   </ng-container>
- * </deltafil-sidebar>
+ *   <a dc-sidebar-logo href="/">Logo</a>
+ *   <div dc-sidebar-actions>
+ *     <button dc-icon-button type="button" aria-label="Search">…</button>
+ *   </div>
+ * </dc-sidebar>
  * ```
  */
 @Component({
-  selector: 'deltafil-sidebar',
-  imports: [NgTemplateOutlet],
+  selector: 'dc-sidebar',
+  imports: [NgTemplateOutlet, DcClickable, DcRipple],
+  hostDirectives: [{ directive: DcColor, inputs: ['color'] }],
   host: {
-    '[class]': 'hostClass()',
+    class:
+      'flex flex-row items-stretch shrink-0 min-h-container-screen overflow-hidden ' +
+      'bg-[var(--dc-color,var(--color-surface-200))] text-[var(--dc-color-foreground,var(--color-surface-200-foreground))]',
     '[attr.aria-hidden]': 'collapsed() ? "true" : null',
     '[attr.inert]': 'collapsed() || null',
     role: 'navigation',
@@ -81,10 +62,10 @@ export class DeltafilSidebarItem {}
   template: `
     <div [class]="railClass()">
       <div class="shrink-0">
-        <ng-content select="[sidebarLogo]" />
+        <ng-content select="[dc-sidebar-logo]" />
       </div>
       <div class="flex shrink-0 flex-row flex-wrap items-center gap-container-sm">
-        <ng-content select="[sidebarActions]" />
+        <ng-content select="[dc-sidebar-actions]" />
       </div>
       <nav class="flex min-h-0 flex-1 flex-col gap-container-sm overflow-auto" aria-label="Sidebar">
         <ng-template
@@ -128,6 +109,8 @@ export class DeltafilSidebarItem {}
     <ng-template #row let-item let-depth="depth" let-panel="panel">
       <button
         type="button"
+        dc-clickable
+        dc-ripple
         [class]="rowClass(item)"
         [style.padding-inline-start.rem]="panel ? 0.5 : 0.5 + depth * 0.75"
         [disabled]="item.disabled === true"
@@ -144,8 +127,8 @@ export class DeltafilSidebarItem {}
     </ng-template>
   `,
 })
-export class DeltafilSidebar {
-  private readonly itemTemplateRef = contentChild(DeltafilSidebarItem, {
+export class DcSidebar {
+  private readonly itemTemplateRef = contentChild(DcSidebarItem, {
     read: TemplateRef,
   });
 
@@ -173,19 +156,6 @@ export class DeltafilSidebar {
    * Id of the highlighted item (controlled by the app).
    */
   readonly activeId = input<string | null>(null);
-
-  /**
-   * Background color / surface (same options as container).
-   *
-   * Row text, hover, and active tones follow this value so content stays visible.
-   *
-   * - `'none'` — transparent
-   * - `'canvas'` — page background
-   * - `'soft'` — light muted surface
-   * - `'panel'` (default) — slightly stronger panel surface
-   * - `'primary'` — brand / primary color
-   */
-  readonly background = input<SidebarBackground>('panel');
 
   /**
    * Divider on the trailing edge of the rail / adjacent panel.
@@ -222,15 +192,9 @@ export class DeltafilSidebar {
     return root.children;
   });
 
-  protected readonly hostClass = computed(() =>
-    ['flex', 'flex-row', 'items-stretch', 'shrink-0', 'min-h-container-screen', 'overflow-hidden'].join(
-      ' ',
-    ),
-  );
-
   protected railClass(): string {
     const closed = this.collapsed();
-    return [
+    return classNames(
       'flex',
       'flex-col',
       'min-h-container-screen',
@@ -238,23 +202,18 @@ export class DeltafilSidebar {
       'overflow-hidden',
       'transition-[width,padding,opacity,border-color] duration-300 ease-in-out',
       'motion-reduce:transition-none',
-      backgroundClass(this.background()),
-      contentToneClass(this.background()),
       closed
         ? ['w-0 gap-0 p-0 opacity-0 pointer-events-none', collapsedBorderClass(this.border())]
         : [
             'w-sidebar gap-container-sm p-container-padding-sm opacity-100',
             borderClass(this.border()),
           ],
-    ]
-      .flat()
-      .filter(Boolean)
-      .join(' ');
+    );
   }
 
   protected panelClass(): string {
     const closed = this.collapsed();
-    return [
+    return classNames(
       'flex',
       'flex-col',
       'min-h-container-screen',
@@ -262,15 +221,10 @@ export class DeltafilSidebar {
       'overflow-hidden',
       'transition-[width,padding,opacity,border-color] duration-300 ease-in-out',
       'motion-reduce:transition-none',
-      backgroundClass(this.background()),
-      contentToneClass(this.background()),
       closed
         ? ['w-0 p-0 opacity-0 pointer-events-none', collapsedBorderClass(this.border())]
         : ['w-sidebar opacity-100', borderClass(this.border())],
-    ]
-      .flat()
-      .filter(Boolean)
-      .join(' ');
+    );
   }
 
   protected hasChildren(item: SidebarItem): boolean {
@@ -293,8 +247,7 @@ export class DeltafilSidebar {
 
   protected rowClass(item: SidebarItem): string {
     const active = item.id === this.activeId();
-    const background = this.background();
-    return [
+    return classNames(
       'flex',
       'w-full',
       'items-start',
@@ -305,15 +258,13 @@ export class DeltafilSidebar {
       'text-left',
       'font-sans',
       'text-sm',
+      'font-medium',
       'transition-colors',
       item.disabled
-        ? 'cursor-not-allowed opacity-50'
-        : ['cursor-pointer', rowHoverClass(background)],
-      active ? rowActiveClass(background) : '',
-    ]
-      .flat()
-      .filter(Boolean)
-      .join(' ');
+        ? 'opacity-50'
+        : !active && 'hover:bg-current/10',
+      active && 'bg-current/15',
+    );
   }
 
   protected onItemClick(item: SidebarItem, fromPanel: boolean): void {
@@ -355,103 +306,10 @@ export class DeltafilSidebar {
   }
 }
 
-function backgroundClass(background: SidebarBackground): string {
-  switch (background) {
-    case 'none':
-      return '';
-    case 'canvas':
-      return 'bg-container-canvas';
-    case 'soft':
-      return 'bg-container-soft';
-    case 'panel':
-      return 'bg-container-panel';
-    case 'primary':
-      return 'bg-container-primary';
-    default: {
-      const _exhaustive: never = background;
-      return _exhaustive;
-    }
-  }
-}
-
-function contentToneClass(background: SidebarBackground): string {
-  switch (background) {
-    case 'primary':
-      return 'text-secondary-50';
-    case 'none':
-    case 'canvas':
-    case 'soft':
-    case 'panel':
-      return 'text-secondary-800';
-    default: {
-      const _exhaustive: never = background;
-      return _exhaustive;
-    }
-  }
-}
-
-function rowHoverClass(background: SidebarBackground): string {
-  switch (background) {
-    case 'soft':
-      return 'hover:bg-container-panel';
-    case 'primary':
-      return 'hover:bg-primary-600';
-    case 'none':
-    case 'canvas':
-    case 'panel':
-      return 'hover:bg-container-soft';
-    default: {
-      const _exhaustive: never = background;
-      return _exhaustive;
-    }
-  }
-}
-
-function rowActiveClass(background: SidebarBackground): string {
-  switch (background) {
-    case 'soft':
-      return 'bg-container-panel font-medium text-primary-600';
-    case 'primary':
-      return 'bg-primary-700 font-medium text-secondary-50';
-    case 'none':
-    case 'canvas':
-    case 'panel':
-      return 'bg-container-soft font-medium text-primary-600';
-    default: {
-      const _exhaustive: never = background;
-      return _exhaustive;
-    }
-  }
-}
-
 function borderClass(border: SidebarBorder): string {
-  switch (border) {
-    case 'none':
-      return '';
-    case 'subtle':
-      return 'border-r border-container-subtle';
-    case 'strong':
-      return 'border-r border-container-strong';
-    case 'primary':
-      return 'border-r border-container-primary';
-    default: {
-      const _exhaustive: never = border;
-      return _exhaustive;
-    }
-  }
+  return border === 'none' ? '' : `border-r ${surfaceBorderColorClass(border)}`;
 }
 
 function collapsedBorderClass(border: SidebarBorder): string {
-  switch (border) {
-    case 'none':
-      return '';
-    case 'subtle':
-    case 'strong':
-    case 'primary':
-      return 'border-r border-transparent';
-    default: {
-      const _exhaustive: never = border;
-      return _exhaustive;
-    }
-  }
+  return border === 'none' ? '' : 'border-r border-transparent';
 }

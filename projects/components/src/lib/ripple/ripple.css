@@ -1,0 +1,36 @@
+/*
+ * Ripple — the wave added by the dc-ripple directive.
+ *
+ * Declared in @layer components, so Tailwind utilities on the host still win.
+ * Retune with --dc-ripple-opacity / --dc-ripple-duration on :root or any ancestor.
+ */
+
+:root {
+  --dc-ripple-opacity: 0.2;
+  --dc-ripple-duration: 550ms;
+}
+
+@layer components {
+  .dc-ripple {
+    @apply relative overflow-hidden;
+  }
+
+  .dc-ripple-wave {
+    @apply pointer-events-none absolute rounded-full;
+    background-color: currentColor;
+    opacity: 0;
+    transform: scale(0);
+    animation: dc-ripple var(--dc-ripple-duration) ease-out;
+  }
+}
+
+@keyframes dc-ripple {
+  from {
+    opacity: var(--dc-ripple-opacity);
+    transform: scale(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1);
+  }
+}

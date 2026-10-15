@@ -13,7 +13,7 @@ export type Theme = 'system' | 'light' | 'dark';
 
 type ThemeListener = (theme: Theme, appliedTheme: 'light' | 'dark') => void;
 
-const STORAGE_KEY = 'deltafil-theme';
+const STORAGE_KEY = 'dc-theme';
 
 const listeners = new Set<ThemeListener>();
 

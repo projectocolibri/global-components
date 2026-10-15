@@ -1,0 +1,24 @@
+/*
+ * @deltafil/components — Tailwind entry for consumers.
+ *
+ * Usage in the app's global stylesheet:
+ *   @import "@deltafil/components/styles/index.css";
+ *
+ * Apps still install tailwindcss (peer) and @tailwindcss/postcss.
+ * Optional app-local overrides (an @theme block, .dark { --color-* }, or --dc-btn-*) go after this import.
+ *
+ * Each feature folder owns its CSS: tokens, @theme entries, and component classes.
+ */
+
+@import 'tailwindcss';
+
+@import './theme/theme.css';
+@import './color/color.css';
+@import './ripple/ripple.css';
+@import './button/button.css';
+@import './container/container.css';
+@import './sidebar/sidebar.css';
+
+/* Scan the library's code for utility classes.
+   Matches the .ts sources in this workspace and the .mjs bundles once published. */
+@source "../**/*.{ts,html,mjs}";

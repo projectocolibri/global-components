@@ -1,0 +1,186 @@
+/*
+ * Button — Tailwind component classes.
+ *
+ *   base     dc-btn
+ *   style    dc-btn-text | dc-btn-filled | dc-btn-tonal | dc-btn-outlined | dc-btn-elevated
+ *            dc-btn-icon | dc-btn-fab | dc-btn-mini-fab | dc-btn-extended-fab
+ *   color    dc-btn-primary (default) | dc-btn-secondary | dc-btn-error
+ *            or any theme color through the dc-color variables (the directives'
+ *            `color` input): --dc-color, --dc-color-foreground
+ *            Tonal, FABs, and selected icon buttons default to primary-100; with a
+ *            color they use it as is, so pick a light step for a soft look.
+ *   state    dc-btn-selected (toggle icon buttons), :disabled / aria-disabled="true"
+ *
+ * Usable without Angular: <a class="dc-btn dc-btn-filled" href="…">Open</a>
+ *
+ * Declared in @layer components, so any Tailwind utility on the element wins:
+ * <button dc-filled-button class="rounded-md w-full shadow-none">…</button>
+ *
+ * Style classes only set --dc-btn-* variables; .dc-btn turns them into properties.
+ * That keeps one place for hover/press/disabled and avoids class-order conflicts.
+ */
+
+/* Size and shape tokens — override on :root (or any ancestor) to retune every button. */
+:root {
+  --dc-btn-height: calc(var(--spacing) * 10);
+  --dc-btn-padding-x: calc(var(--spacing) * 6);
+  --dc-btn-text-padding-x: calc(var(--spacing) * 3);
+  --dc-btn-gap: calc(var(--spacing) * 2);
+  --dc-btn-radius: 9999px;
+  --dc-btn-font-size: var(--text-sm);
+  --dc-btn-line-height: var(--text-sm--line-height);
+  --dc-btn-icon-size: calc(var(--spacing) * 10);
+  --dc-btn-fab-size: calc(var(--spacing) * 14);
+  --dc-btn-fab-radius: var(--radius-2xl);
+  --dc-btn-mini-fab-size: calc(var(--spacing) * 10);
+  --dc-btn-mini-fab-radius: var(--radius-xl);
+  --dc-btn-extended-fab-padding-x: calc(var(--spacing) * 4);
+  --dc-btn-hover-opacity: 8%;
+  --dc-btn-press-opacity: 12%;
+}
+
+@layer components {
+  /* ---------------------------------------------------------------- base -- */
+  .dc-btn {
+    @apply relative inline-flex overflow-hidden shrink-0 cursor-pointer items-center justify-center
+      border border-solid align-middle font-sans font-medium whitespace-nowrap no-underline
+      select-none transition-[background-color,border-color,box-shadow,color] duration-200
+      ease-out focus-visible:outline-2 focus-visible:outline-offset-2
+      focus-visible:outline-ring motion-reduce:transition-none;
+
+    --dc-btn-ink: var(--dc-btn-fg, var(--dc-color, var(--color-primary)));
+
+    gap: var(--dc-btn-gap);
+    width: var(--dc-btn-width, auto);
+    height: var(--dc-btn-size, var(--dc-btn-height));
+    padding-inline: var(--dc-btn-padding, var(--dc-btn-padding-x));
+    border-radius: var(--dc-btn-shape, var(--dc-btn-radius));
+    border-color: var(--dc-btn-border, transparent);
+    background-color: var(--dc-btn-bg, transparent);
+    color: var(--dc-btn-ink);
+    box-shadow: var(--dc-btn-shadow, none);
+    font-size: var(--dc-btn-font-size);
+    line-height: var(--dc-btn-line-height);
+  }
+
+  .dc-btn > svg {
+    @apply shrink-0;
+  }
+
+  /* Hover/press: tint the background with the label color. */
+  .dc-btn:is(:hover, :focus-visible):not(:disabled, [aria-disabled='true']) {
+    background-color: color-mix(
+      in oklab,
+      var(--dc-btn-bg, transparent),
+      var(--dc-btn-ink) var(--dc-btn-hover-opacity)
+    );
+    box-shadow: var(--dc-btn-shadow-hover, var(--dc-btn-shadow, none));
+  }
+
+  .dc-btn:active:not(:disabled, [aria-disabled='true']) {
+    background-color: color-mix(
+      in oklab,
+      var(--dc-btn-bg, transparent),
+      var(--dc-btn-ink) var(--dc-btn-press-opacity)
+    );
+  }
+
+  .dc-btn:is(:disabled, [aria-disabled='true']) {
+    @apply pointer-events-none;
+    border-color: var(--dc-btn-disabled-border, transparent);
+    background-color: var(--dc-btn-disabled-bg, transparent);
+    color: color-mix(in oklab, var(--color-foreground) 38%, transparent);
+    box-shadow: none;
+  }
+
+  /* -------------------------------------------------------------- colors -- */
+  .dc-btn-primary {
+    --dc-color: var(--color-primary);
+    --dc-color-foreground: var(--color-primary-foreground);
+  }
+
+  .dc-btn-secondary {
+    --dc-color: var(--color-secondary);
+    --dc-color-foreground: var(--color-secondary-foreground);
+  }
+
+  .dc-btn-error {
+    --dc-color: var(--color-error);
+    --dc-color-foreground: var(--color-error-foreground);
+  }
+
+  /* ------------------------------------------------------- common styles -- */
+  .dc-btn-text {
+    --dc-btn-padding: var(--dc-btn-text-padding-x);
+  }
+
+  .dc-btn-filled {
+    --dc-btn-bg: var(--dc-color, var(--color-primary));
+    --dc-btn-fg: var(--dc-color-foreground, var(--color-primary-foreground));
+    --dc-btn-shadow-hover: var(--shadow-sm);
+    --dc-btn-disabled-bg: color-mix(in oklab, var(--color-foreground) 12%, transparent);
+  }
+
+  .dc-btn-tonal {
+    --dc-btn-bg: var(--dc-color, var(--color-primary-100));
+    --dc-btn-fg: var(--dc-color-foreground, var(--color-primary-100-foreground));
+    --dc-btn-shadow-hover: var(--shadow-sm);
+    --dc-btn-disabled-bg: color-mix(in oklab, var(--color-foreground) 12%, transparent);
+  }
+
+  .dc-btn-outlined {
+    --dc-btn-border: var(--color-border-strong);
+    --dc-btn-disabled-border: color-mix(in oklab, var(--color-foreground) 12%, transparent);
+  }
+
+  .dc-btn-elevated {
+    --dc-btn-bg: var(--color-surface-100);
+    --dc-btn-shadow: var(--shadow-sm);
+    --dc-btn-shadow-hover: var(--shadow-md);
+    --dc-btn-disabled-bg: color-mix(in oklab, var(--color-foreground) 12%, transparent);
+  }
+
+  /* -------------------------------------------------------- icon buttons -- */
+  .dc-btn-icon {
+    --dc-btn-fg: var(--dc-color, var(--color-secondary-600));
+    --dc-btn-size: var(--dc-btn-icon-size);
+    --dc-btn-width: var(--dc-btn-icon-size);
+    --dc-btn-padding: 0;
+  }
+
+  .dc-btn-icon.dc-btn-selected {
+    --dc-btn-bg: var(--dc-color, var(--color-primary-100));
+    --dc-btn-fg: var(--dc-color-foreground, var(--color-primary-100-foreground));
+  }
+
+  /* ---------------------------------------------- floating action buttons -- */
+  .dc-btn-fab,
+  .dc-btn-mini-fab,
+  .dc-btn-extended-fab {
+    --dc-btn-bg: var(--dc-color, var(--color-primary-100));
+    --dc-btn-fg: var(--dc-color-foreground, var(--color-primary-100-foreground));
+    --dc-btn-shadow: var(--shadow-lg);
+    --dc-btn-shadow-hover: var(--shadow-xl);
+    --dc-btn-disabled-bg: color-mix(in oklab, var(--color-foreground) 12%, transparent);
+    --dc-btn-shape: var(--dc-btn-fab-radius);
+  }
+
+  .dc-btn-fab {
+    --dc-btn-size: var(--dc-btn-fab-size);
+    --dc-btn-width: var(--dc-btn-fab-size);
+    --dc-btn-padding: 0;
+  }
+
+  .dc-btn-mini-fab {
+    --dc-btn-size: var(--dc-btn-mini-fab-size);
+    --dc-btn-width: var(--dc-btn-mini-fab-size);
+    --dc-btn-padding: 0;
+    --dc-btn-shape: var(--dc-btn-mini-fab-radius);
+  }
+
+  .dc-btn-extended-fab {
+    --dc-btn-size: var(--dc-btn-fab-size);
+    --dc-btn-padding: var(--dc-btn-extended-fab-padding-x);
+    --dc-btn-gap: 0.75rem;
+  }
+}

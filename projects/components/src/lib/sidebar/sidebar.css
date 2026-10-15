@@ -1,0 +1,8 @@
+/*
+ * Sidebar — rail width. Surface colors come from container.css.
+ */
+
+@theme {
+  /* Width - sidebar → w-sidebar; fits 4 icon buttons + gap-sm + padding-sm */
+  --width-sidebar: 13rem;
+}
