@@ -6,19 +6,19 @@ import { DC_BUTTONS } from './index';
 @Component({
   imports: [DC_BUTTONS],
   template: `
-    <button dc-button type="button" id="text">Text</button>
-    <button dc-filled-button type="button" id="filled" [color]="color()" [disabled]="disabled()">
+    <button dc-btn type="button" id="default">Default</button>
+    <button dc-btn-text type="button" id="text">Text</button>
+    <button dc-btn-filled type="button" id="filled" [color]="color()" [disabled]="disabled()">
       Filled
     </button>
-    <button dc-tonal-button type="button" id="tonal">Tonal</button>
-    <button dc-outlined-button type="button" id="outlined" class="rounded-md">Outlined</button>
-    <button dc-elevated-button type="button" id="elevated">Elevated</button>
-    <button dc-icon-button type="button" id="icon" aria-label="More"></button>
-    <button dc-icon-button type="button" id="toggle" aria-label="Bold" [selected]="selected()"></button>
-    <button dc-fab type="button" id="fab" aria-label="New"></button>
-    <button dc-mini-fab type="button" id="mini-fab" aria-label="Menu"></button>
-    <button dc-extended-fab type="button" id="extended-fab">Compose</button>
-    <a dc-filled-button href="#" id="link" [disabled]="disabled()" (click)="clicks.update((n) => n + 1)">
+    <button dc-btn-outlined type="button" id="outlined" class="rounded-md">Outlined</button>
+    <button dc-btn-elevated type="button" id="elevated">Elevated</button>
+    <button dc-btn-icon type="button" id="icon" aria-label="More"></button>
+    <button dc-btn-icon type="button" id="toggle" aria-label="Bold" [selected]="selected()"></button>
+    <button dc-btn-fab type="button" id="fab" aria-label="New"></button>
+    <button dc-btn-mini-fab type="button" id="mini-fab" aria-label="Menu"></button>
+    <button dc-btn-extended-fab type="button" id="extended-fab">Compose</button>
+    <a dc-btn-filled href="#" id="link" [disabled]="disabled()" (click)="clicks.update((n) => n + 1)">
       Link
     </a>
   `,
@@ -48,9 +48,9 @@ describe('dc buttons', () => {
   it('adds the base class plus the style class of each directive', async () => {
     const { el } = await setup();
     const expected: Record<string, string> = {
+      default: 'dc-btn-filled',
       text: 'dc-btn-text',
       filled: 'dc-btn-filled',
-      tonal: 'dc-btn-tonal',
       outlined: 'dc-btn-outlined',
       elevated: 'dc-btn-elevated',
       icon: 'dc-btn-icon',

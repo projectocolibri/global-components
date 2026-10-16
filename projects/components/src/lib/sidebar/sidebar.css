@@ -3,6 +3,6 @@
  */
 
 @theme {
-  /* Width - sidebar → w-sidebar; fits 4 icon buttons + gap-sm + padding-sm */
-  --width-sidebar: 13rem;
+  /* Width - sidebar → w-sidebar (--dc-ref-sidebar-width in tokens.css) */
+  --width-sidebar: var(--dc-ref-sidebar-width);
 }

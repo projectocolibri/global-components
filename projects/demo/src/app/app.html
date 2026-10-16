@@ -17,7 +17,7 @@
   >
     <div dc-sidebar-logo class="flex items-center gap-container-sm">
       <button
-        dc-icon-button
+        dc-btn-icon
         type="button"
         aria-label="Hide sidebar"
         (click)="toggleSidebarCollapsed()"
@@ -46,7 +46,7 @@
 
     <div dc-sidebar-actions class="flex flex-row flex-wrap items-center gap-container-sm">
       <button
-        dc-icon-button
+        dc-btn-icon
         type="button"
         aria-label="Inline expansion"
         [selected]="sidebarExpansion() === 'inline'"
@@ -65,7 +65,7 @@
         </svg>
       </button>
       <button
-        dc-icon-button
+        dc-btn-icon
         type="button"
         aria-label="Adjacent expansion"
         [selected]="sidebarExpansion() === 'adjacent'"
@@ -85,7 +85,7 @@
         </svg>
       </button>
       <button
-        dc-icon-button
+        dc-btn-icon
         type="button"
         [attr.aria-label]="isDark() ? 'Switch to light mode' : 'Switch to dark mode'"
         (click)="toggleDarkMode()"
@@ -120,7 +120,7 @@
         }
       </button>
       <button
-        dc-icon-button
+        dc-btn-icon
         type="button"
         aria-label="Use computer color scheme"
         [selected]="themePreference() === 'system'"
@@ -171,7 +171,7 @@
   >
       @if (sidebarCollapsed()) {
         <button
-          dc-icon-button
+          dc-btn-icon
           type="button"
           aria-label="Show sidebar"
           (click)="toggleSidebarCollapsed()"
@@ -210,7 +210,7 @@
         <h2 class="font-sans text-xl font-semibold text-foreground">Button</h2>
         <div class="overflow-x-auto">
           <div
-            class="grid w-max grid-cols-[auto_repeat(9,max-content)] items-center justify-items-center gap-x-4 gap-y-3"
+            class="grid w-max grid-cols-[auto_repeat(8,max-content)] items-center justify-items-center gap-x-4 gap-y-3"
           >
             <span></span>
             @for (style of buttonStyles; track style) {
@@ -221,23 +221,20 @@
               <span class="justify-self-start pr-2 font-sans text-sm font-semibold text-foreground">
                 {{ row.label }}
               </span>
-              <button dc-button type="button" [color]="row.color" [disabled]="row.disabled">
+              <button dc-btn-text type="button" [color]="row.color" [disabled]="row.disabled">
                 Text
               </button>
-              <button dc-elevated-button type="button" [color]="row.color" [disabled]="row.disabled">
+              <button dc-btn-elevated type="button" [color]="row.color" [disabled]="row.disabled">
                 Elevated
               </button>
-              <button dc-outlined-button type="button" [color]="row.color" [disabled]="row.disabled">
+              <button dc-btn-outlined type="button" [color]="row.color" [disabled]="row.disabled">
                 Outlined
               </button>
-              <button dc-filled-button type="button" [color]="row.color" [disabled]="row.disabled">
+              <button dc-btn-filled type="button" [color]="row.color" [disabled]="row.disabled">
                 Filled
               </button>
-              <button dc-tonal-button type="button" [color]="row.color" [disabled]="row.disabled">
-                Tonal
-              </button>
               <button
-                dc-icon-button
+                dc-btn-icon
                 type="button"
                 aria-label="More"
                 [color]="row.color"
@@ -256,7 +253,7 @@
                 </svg>
               </button>
               <button
-                dc-fab
+                dc-btn-fab
                 type="button"
                 aria-label="Delete"
                 [color]="row.color"
@@ -275,7 +272,7 @@
                 </svg>
               </button>
               <button
-                dc-mini-fab
+                dc-btn-mini-fab
                 type="button"
                 aria-label="Menu"
                 [color]="row.color"
@@ -293,7 +290,7 @@
                   <path d="M4 7h16M4 12h16M4 17h16" />
                 </svg>
               </button>
-              <button dc-extended-fab type="button" [color]="row.color" [disabled]="row.disabled">
+              <button dc-btn-extended-fab type="button" [color]="row.color" [disabled]="row.disabled">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -312,8 +309,8 @@
         </div>
 
         <div dc-container direction="horizontal" gap="sm" wrap align="center" width="full">
-          <button dc-filled-button type="button" class="rounded-md">Tailwind rounded-md</button>
-          <a class="dc-btn dc-btn-tonal" href="#">Class-only link</a>
+          <button dc-btn-filled type="button" class="rounded-md">Tailwind rounded-md</button>
+          <a class="dc-btn dc-btn-outlined" href="#">Class-only link</a>
         </div>
       </section>
     }

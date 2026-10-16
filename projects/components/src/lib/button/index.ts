@@ -1,9 +1,9 @@
 import {
   DcButton,
+  DcButtonText,
   DcElevatedButton,
   DcFilledButton,
   DcOutlinedButton,
-  DcTonalButton,
 } from './button';
 import { DcExtendedFab, DcFab, DcMiniFab } from './fab';
 import { DcIconButton } from './icon-button';
@@ -16,8 +16,8 @@ export * from './fab';
 /** Every button directive, for `imports: [DC_BUTTONS]`. */
 export const DC_BUTTONS = [
   DcButton,
+  DcButtonText,
   DcFilledButton,
-  DcTonalButton,
   DcOutlinedButton,
   DcElevatedButton,
   DcIconButton,

@@ -42,7 +42,7 @@ export type SidebarBorder = SurfaceBorder;
  * >
  *   <a dc-sidebar-logo href="/">Logo</a>
  *   <div dc-sidebar-actions>
- *     <button dc-icon-button type="button" aria-label="Search">…</button>
+ *     <button dc-btn-icon type="button" aria-label="Search">…</button>
  *   </div>
  * </dc-sidebar>
  * ```

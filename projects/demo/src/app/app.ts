@@ -51,7 +51,6 @@ export class App {
     'elevated',
     'outlined',
     'filled',
-    'tonal',
     'icon',
     'fab',
     'mini-fab',

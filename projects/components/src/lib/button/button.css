@@ -2,41 +2,46 @@
  * Button — Tailwind component classes.
  *
  *   base     dc-btn
- *   style    dc-btn-text | dc-btn-filled | dc-btn-tonal | dc-btn-outlined | dc-btn-elevated
+ *   style    dc-btn-text | dc-btn-filled | dc-btn-outlined | dc-btn-elevated
  *            dc-btn-icon | dc-btn-fab | dc-btn-mini-fab | dc-btn-extended-fab
  *   color    dc-btn-primary (default) | dc-btn-secondary | dc-btn-error
  *            or any theme color through the dc-color variables (the directives'
  *            `color` input): --dc-color, --dc-color-foreground
- *            Tonal, FABs, and selected icon buttons default to primary-100; with a
+ *            FABs and selected icon buttons default to primary-100; with a
  *            color they use it as is, so pick a light step for a soft look.
  *   state    dc-btn-selected (toggle icon buttons), :disabled / aria-disabled="true"
  *
  * Usable without Angular: <a class="dc-btn dc-btn-filled" href="…">Open</a>
  *
  * Declared in @layer components, so any Tailwind utility on the element wins:
- * <button dc-filled-button class="rounded-md w-full shadow-none">…</button>
+ * <button dc-btn-filled class="rounded-md w-full shadow-none">…</button>
  *
  * Style classes only set --dc-btn-* variables; .dc-btn turns them into properties.
  * That keeps one place for hover/press/disabled and avoids class-order conflicts.
+ * Sizes, shapes and opacities are the --dc-btn-* variables below; override them on :root
+ * (or any ancestor) to retune every button.
  */
 
-/* Size and shape tokens — override on :root (or any ancestor) to retune every button. */
+/* Values come from --dc-ref-btn-* in tokens.css. */
 :root {
-  --dc-btn-height: calc(var(--spacing) * 10);
-  --dc-btn-padding-x: calc(var(--spacing) * 6);
-  --dc-btn-text-padding-x: calc(var(--spacing) * 3);
-  --dc-btn-gap: calc(var(--spacing) * 2);
-  --dc-btn-radius: 9999px;
-  --dc-btn-font-size: var(--text-sm);
-  --dc-btn-line-height: var(--text-sm--line-height);
-  --dc-btn-icon-size: calc(var(--spacing) * 10);
-  --dc-btn-fab-size: calc(var(--spacing) * 14);
-  --dc-btn-fab-radius: var(--radius-2xl);
-  --dc-btn-mini-fab-size: calc(var(--spacing) * 10);
-  --dc-btn-mini-fab-radius: var(--radius-xl);
-  --dc-btn-extended-fab-padding-x: calc(var(--spacing) * 4);
-  --dc-btn-hover-opacity: 8%;
-  --dc-btn-press-opacity: 12%;
+  --dc-btn-height: var(--dc-ref-btn-height);
+  --dc-btn-padding-x: var(--dc-ref-btn-padding-x);
+  --dc-btn-text-padding-x: var(--dc-ref-btn-text-padding-x);
+  --dc-btn-gap: var(--dc-ref-btn-gap);
+  --dc-btn-radius: var(--dc-ref-btn-radius);
+  --dc-btn-font-size: var(--dc-ref-btn-font-size);
+  --dc-btn-line-height: var(--dc-ref-btn-line-height);
+  --dc-btn-icon-size: var(--dc-ref-btn-icon-size);
+  --dc-btn-fab-size: var(--dc-ref-btn-fab-size);
+  --dc-btn-fab-radius: var(--dc-ref-btn-fab-radius);
+  --dc-btn-mini-fab-size: var(--dc-ref-btn-mini-fab-size);
+  --dc-btn-mini-fab-radius: var(--dc-ref-btn-mini-fab-radius);
+  --dc-btn-extended-fab-padding-x: var(--dc-ref-btn-extended-fab-padding-x);
+  --dc-btn-extended-fab-gap: var(--dc-ref-btn-extended-fab-gap);
+  --dc-btn-hover-opacity: var(--dc-ref-btn-hover-opacity);
+  --dc-btn-press-opacity: var(--dc-ref-btn-press-opacity);
+  --dc-btn-disabled-container-opacity: var(--dc-ref-btn-disabled-container-opacity);
+  --dc-btn-disabled-label-opacity: var(--dc-ref-btn-disabled-label-opacity);
 }
 
 @layer components {
@@ -89,7 +94,7 @@
     @apply pointer-events-none;
     border-color: var(--dc-btn-disabled-border, transparent);
     background-color: var(--dc-btn-disabled-bg, transparent);
-    color: color-mix(in oklab, var(--color-foreground) 38%, transparent);
+    color: color-mix(in oklab, var(--color-foreground) var(--dc-btn-disabled-label-opacity), transparent);
     box-shadow: none;
   }
 
@@ -118,26 +123,19 @@
     --dc-btn-bg: var(--dc-color, var(--color-primary));
     --dc-btn-fg: var(--dc-color-foreground, var(--color-primary-foreground));
     --dc-btn-shadow-hover: var(--shadow-sm);
-    --dc-btn-disabled-bg: color-mix(in oklab, var(--color-foreground) 12%, transparent);
-  }
-
-  .dc-btn-tonal {
-    --dc-btn-bg: var(--dc-color, var(--color-primary-100));
-    --dc-btn-fg: var(--dc-color-foreground, var(--color-primary-100-foreground));
-    --dc-btn-shadow-hover: var(--shadow-sm);
-    --dc-btn-disabled-bg: color-mix(in oklab, var(--color-foreground) 12%, transparent);
+    --dc-btn-disabled-bg: color-mix(in oklab, var(--color-foreground) var(--dc-btn-disabled-container-opacity), transparent);
   }
 
   .dc-btn-outlined {
     --dc-btn-border: var(--color-border-strong);
-    --dc-btn-disabled-border: color-mix(in oklab, var(--color-foreground) 12%, transparent);
+    --dc-btn-disabled-border: color-mix(in oklab, var(--color-foreground) var(--dc-btn-disabled-container-opacity), transparent);
   }
 
   .dc-btn-elevated {
     --dc-btn-bg: var(--color-surface-100);
     --dc-btn-shadow: var(--shadow-sm);
     --dc-btn-shadow-hover: var(--shadow-md);
-    --dc-btn-disabled-bg: color-mix(in oklab, var(--color-foreground) 12%, transparent);
+    --dc-btn-disabled-bg: color-mix(in oklab, var(--color-foreground) var(--dc-btn-disabled-container-opacity), transparent);
   }
 
   /* -------------------------------------------------------- icon buttons -- */
@@ -161,7 +159,7 @@
     --dc-btn-fg: var(--dc-color-foreground, var(--color-primary-100-foreground));
     --dc-btn-shadow: var(--shadow-lg);
     --dc-btn-shadow-hover: var(--shadow-xl);
-    --dc-btn-disabled-bg: color-mix(in oklab, var(--color-foreground) 12%, transparent);
+    --dc-btn-disabled-bg: color-mix(in oklab, var(--color-foreground) var(--dc-btn-disabled-container-opacity), transparent);
     --dc-btn-shape: var(--dc-btn-fab-radius);
   }
 
@@ -181,6 +179,6 @@
   .dc-btn-extended-fab {
     --dc-btn-size: var(--dc-btn-fab-size);
     --dc-btn-padding: var(--dc-btn-extended-fab-padding-x);
-    --dc-btn-gap: 0.75rem;
+    --dc-btn-gap: var(--dc-btn-extended-fab-gap);
   }
 }

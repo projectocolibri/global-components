@@ -5,9 +5,10 @@
  * Retune with --dc-ripple-opacity / --dc-ripple-duration on :root or any ancestor.
  */
 
+/* Values come from --dc-ref-ripple-* in tokens.css. */
 :root {
-  --dc-ripple-opacity: 0.2;
-  --dc-ripple-duration: 550ms;
+  --dc-ripple-opacity: var(--dc-ref-ripple-opacity);
+  --dc-ripple-duration: var(--dc-ref-ripple-duration);
 }
 
 @layer components {

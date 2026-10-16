@@ -11,7 +11,7 @@ import { DcRipple } from '../ripple';
  * - `dc-clickable` — pointer cursor; brings `dc-disabled` (`disabled` input)
  * - `dc-ripple` — ink ripple on press; shares the same `dc-disabled`
  *
- * Not used directly. Each style (`dc-button`, `dc-filled-button`, `dc-fab`, …)
+ * Not used directly. Each style (`dc-btn`, `dc-btn-filled`, `dc-btn-fab`, …)
  * extends it and adds its own `dc-btn-*` class through `host`. All visuals live
  * in `button.css`, so Tailwind utilities on the element (`rounded-md`, `w-full`,
  * `shadow-none`, …) override them.
@@ -22,7 +22,7 @@ import { DcRipple } from '../ripple';
  * @example
  * ```ts
  * @Directive({
- *   selector: 'button[dc-danger-button], a[dc-danger-button]',
+ *   selector: 'button[dc-btn-danger], a[dc-btn-danger]',
  *   host: { class: 'dc-btn-filled dc-btn-error' },
  * })
  * export class DcDangerButton extends DcButtonBase {}

@@ -8,11 +8,11 @@ import { DcButtonBase } from './button-base';
  *
  * @example
  * ```html
- * <button dc-fab type="button" aria-label="New">…</button>
+ * <button dc-btn-fab type="button" aria-label="New">…</button>
  * ```
  */
 @Directive({
-  selector: 'button[dc-fab], a[dc-fab]',
+  selector: 'button[dc-btn-fab], a[dc-btn-fab]',
   host: { class: 'dc-btn-fab' },
 })
 export class DcFab extends DcButtonBase {}
@@ -22,11 +22,11 @@ export class DcFab extends DcButtonBase {}
  *
  * @example
  * ```html
- * <button dc-mini-fab type="button" aria-label="Menu">…</button>
+ * <button dc-btn-mini-fab type="button" aria-label="Menu">…</button>
  * ```
  */
 @Directive({
-  selector: 'button[dc-mini-fab], a[dc-mini-fab]',
+  selector: 'button[dc-btn-mini-fab], a[dc-btn-mini-fab]',
   host: { class: 'dc-btn-mini-fab' },
 })
 export class DcMiniFab extends DcButtonBase {}
@@ -36,11 +36,11 @@ export class DcMiniFab extends DcButtonBase {}
  *
  * @example
  * ```html
- * <button dc-extended-fab type="button"><svg …/> Compose</button>
+ * <button dc-btn-extended-fab type="button"><svg …/> Compose</button>
  * ```
  */
 @Directive({
-  selector: 'button[dc-extended-fab], a[dc-extended-fab]',
+  selector: 'button[dc-btn-extended-fab], a[dc-btn-extended-fab]',
   host: { class: 'dc-btn-extended-fab' },
 })
 export class DcExtendedFab extends DcButtonBase {}

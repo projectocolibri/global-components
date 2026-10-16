@@ -1,5 +1,6 @@
 /*
  * Container — layout tokens as Tailwind theme variables.
+ * Border width, radii, gaps and padding come from --dc-ref-container-* in tokens.css.
  *
  *   border-container-subtle|strong|primary
  *   gap-container-sm|md|lg   p-container-padding-*   m-container-margin-*
@@ -18,20 +19,20 @@
   --color-container-strong: var(--color-border-strong);
 
   /* Border and radius */
-  --border-width-container: 1px;
-  --radius-container-sm: var(--radius-sm);
-  --radius-container-md: var(--radius-lg);
-  --radius-container-lg: var(--radius-xl);
+  --border-width-container: var(--dc-ref-container-border-width);
+  --radius-container-sm: var(--dc-ref-container-radius-sm);
+  --radius-container-md: var(--dc-ref-container-radius-md);
+  --radius-container-lg: var(--dc-ref-container-radius-lg);
 
   /* Spacing - gap */
-  --spacing-container-sm: calc(var(--spacing) * 2);
-  --spacing-container-md: calc(var(--spacing) * 4);
-  --spacing-container-lg: calc(var(--spacing) * 6);
+  --spacing-container-sm: var(--dc-ref-container-gap-sm);
+  --spacing-container-md: var(--dc-ref-container-gap-md);
+  --spacing-container-lg: var(--dc-ref-container-gap-lg);
 
   /* Spacing - padding */
-  --spacing-container-padding-sm: calc(var(--spacing) * 2);
-  --spacing-container-padding-md: calc(var(--spacing) * 4);
-  --spacing-container-padding-lg: calc(var(--spacing) * 8);
+  --spacing-container-padding-sm: var(--dc-ref-container-padding-sm);
+  --spacing-container-padding-md: var(--dc-ref-container-padding-md);
+  --spacing-container-padding-lg: var(--dc-ref-container-padding-lg);
 
   /* Spacing - margin (same scale as gap) */
   --spacing-container-margin-sm: var(--spacing-container-sm);
